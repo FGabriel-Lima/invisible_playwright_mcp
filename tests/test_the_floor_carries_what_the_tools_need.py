@@ -45,6 +45,11 @@ WHAT_THE_TOOLS_NEED = {
         ("0.37.0", "the snapshot runs in the caller's world, so a page that "
                    "replaces getBoundingClientRect no longer hides its elements "
                    "from it (B322, firefox-49)"),
+        ("0.41.0", "the canvas noise is edge-aware (B363, firefox-51): a flat "
+                   "region or a blend of two colours reads back exact, where on "
+                   "firefox-50 a flat clear did not read back as cleared, a "
+                   "readback signature a page that probes the canvas can tell "
+                   "from a real device"),
     ],
 }
 
