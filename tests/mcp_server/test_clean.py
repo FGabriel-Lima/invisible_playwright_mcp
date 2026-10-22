@@ -232,7 +232,8 @@ def test_the_live_page_pass_never_writes_to_the_page():
     assert js.index("cloneNode") < js.index("removeChild")
 
 
-def test_unwrapping_keeps_the_words_it_unwraps():
+@pytest.mark.parametrize("word", ("plain", "bold", "italic", "words"))
+def test_unwrapping_keeps_the_words_it_unwraps(word):
     """selectolax has two methods a line apart in meaning: `strip_tags` deletes
     the tag WITH its contents, `unwrap_tags` keeps the children. Using the first
     where the second was meant deleted the text inside every <b>, <em> and
@@ -240,8 +241,7 @@ def test_unwrapping_keeps_the_words_it_unwraps():
     element."""
     html = "<html><body><p>plain <b>bold</b> and <em>italic</em> words</p></body></html>"
     out = clean.clean_page(html, "text")
-    for word in ("plain", "bold", "italic", "words"):
-        assert word in out, f"unwrapping ate {word!r}"
+    assert word in out, f"unwrapping ate {word!r}"
 
 
 def test_a_repeated_option_label_does_not_survive_the_collapse():
