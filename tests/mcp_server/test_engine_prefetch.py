@@ -71,11 +71,10 @@ def _fresh(monkeypatch):
     _Built.built = []
 
 
-def _until(predicate, seconds=5.0):
-    deadline = time.monotonic() + seconds
-    while not predicate():
-        assert time.monotonic() < deadline
-        time.sleep(0.01)
+def _settled(engine, seconds=5.0):
+    """Wait for the download thread itself to end, not for a clock to tick."""
+    engine._thread.join(seconds)
+    assert not engine._thread.is_alive(), "the download did not end in %s s" % seconds
 
 
 async def test_open_answers_with_the_download_and_launches_nothing_meanwhile():
@@ -89,7 +88,8 @@ async def test_open_answers_with_the_download_and_launches_nothing_meanwhile():
     assert fetch.calls == 1, "open did not start the download it answered about"
 
     fetch.release.set()
-    _until(engine.ready)
+    _settled(engine)
+    assert engine.ready(), engine.state
     said = await work.open("main")
     assert said.startswith("the main browser is open"), said
     assert len(_Built.built) == 1
@@ -120,7 +120,8 @@ async def test_a_failed_download_is_said_and_the_next_open_retries_it():
     engine = Engine(fetch=fetch)
     engine.start()
     fetch.release.set()
-    _until(lambda: engine.state == "failed")
+    _settled(engine)
+    assert engine.state == "failed", engine.state
     work = Work("default", factory=_Built, engine=engine)
 
     fetch.fail = None
