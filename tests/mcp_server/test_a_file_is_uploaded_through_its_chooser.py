@@ -89,8 +89,9 @@ def test_a_link_out_of_the_directory_is_judged_by_where_it_lands(allowed, tmp_pa
 def test_dot_dot_does_not_climb_out(allowed, tmp_path):
     other = tmp_path / "secret.txt"
     other.write_text("x")
-    with pytest.raises(PermissionError):
+    with pytest.raises(PermissionError) as refused:
         actions.uploadable([str(allowed / ".." / "secret.txt")], env=_env(allowed))
+    assert "not inside a directory" in str(refused.value), str(refused.value)
 
 
 def test_a_hidden_directory_is_not_sent_from(allowed):
