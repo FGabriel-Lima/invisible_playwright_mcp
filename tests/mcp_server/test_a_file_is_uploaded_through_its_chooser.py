@@ -180,8 +180,9 @@ def test_a_file_on_another_drive_is_outside_not_an_error(allowed):
 
 def test_a_file_over_the_limit_is_refused(allowed, monkeypatch):
     monkeypatch.setattr(actions, "UPLOAD_MAX_BYTES", 4)
-    with pytest.raises(ValueError, match="over the"):
+    with pytest.raises(ValueError) as refused:
         actions.uploadable([str(allowed / "a.pdf")], env=_env(allowed))
+    assert "over the" in str(refused.value), str(refused.value)
 
 
 # --- the action, against a double -------------------------------------------------
