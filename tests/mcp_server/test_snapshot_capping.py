@@ -43,10 +43,10 @@ def test_usable_elements_remain_above_the_cap(cap):
     assert d["omitted_elements"] == 200 - len(d["interactive_elements"])
 
 
-def test_the_cap_is_respected():
-    for cap in (800, 2000, 6000, 20000):
-        s = actions.capped_elements(HEAD, elements(300), limit=cap)
-        assert len(s) <= cap, f"cap {cap} exceeded: {len(s)}"
+@pytest.mark.parametrize("cap", (800, 2000, 6000, 20000))
+def test_the_cap_is_respected(cap):
+    s = actions.capped_elements(HEAD, elements(300), limit=cap)
+    assert len(s) <= cap, f"cap {cap} exceeded: {len(s)}"
 
 
 def test_nothing_is_omitted_below_the_cap():
