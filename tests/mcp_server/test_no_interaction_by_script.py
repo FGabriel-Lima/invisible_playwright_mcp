@@ -244,7 +244,9 @@ PAGE = b"""<!doctype html>
 </body></html>"""
 
 
-def _serve():
+@pytest.fixture
+def url():
+    """The page above, served on a free port and shut down after the test."""
     class H(http.server.BaseHTTPRequestHandler):
         def do_GET(self):
             self.send_response(200)
@@ -262,11 +264,12 @@ def _serve():
     s.close()
     srv = http.server.HTTPServer(("127.0.0.1", port), H)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
-    return srv, "http://127.0.0.1:%d/" % port
+    yield "http://127.0.0.1:%d/" % port
+    srv.shutdown()
 
 
 @pytest.mark.e2e
-def test_the_snapshot_reports_what_the_controls_are_set_to():
+def test_the_snapshot_reports_what_the_controls_are_set_to(url):
     """A real page, because this is JavaScript running in a browser and reading
     the source proves only that somebody typed the right thing.
 
@@ -279,8 +282,6 @@ def test_the_snapshot_reports_what_the_controls_are_set_to():
 
     from invisible_playwright_mcp.mcp.plan import plan_session
     from invisible_playwright_mcp.mcp.session import StealthSession
-
-    srv, url = _serve()
 
     async def run():
         # ⛔ THROUGH plan_session, NOT a bare StealthSession(). The session no
@@ -297,10 +298,7 @@ def test_the_snapshot_reports_what_the_controls_are_set_to():
         finally:
             await session.close()
 
-    try:
-        snap = asyncio.run(run())
-    finally:
-        srv.shutdown()
+    snap = asyncio.run(run())
 
     by_id = {e.get("id"): e for e in snap["interactive_elements"]}
     assert set(by_id) >= {"nome", "sala", "proiettore", "schermo"}, by_id
