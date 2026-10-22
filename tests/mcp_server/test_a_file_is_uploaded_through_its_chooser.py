@@ -138,8 +138,9 @@ def test_a_root_that_is_a_symlink_turns_uploads_off(allowed, tmp_path):
 
 
 def test_a_root_that_does_not_exist_turns_uploads_off(tmp_path):
-    with pytest.raises(RuntimeError, match="uploads are off"):
+    with pytest.raises(RuntimeError) as refused:
         actions.uploadable(["/x"], env=_env(tmp_path / "missing"))
+    assert "uploads are off" in str(refused.value), str(refused.value)
 
 
 windows_only = pytest.mark.skipif(
