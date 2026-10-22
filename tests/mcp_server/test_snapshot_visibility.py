@@ -47,10 +47,10 @@ def test_the_filter_no_longer_asks_for_offsetparent():
     )
 
 
-def test_the_filter_looks_at_what_actually_decides_visibility():
+@pytest.mark.parametrize("expected", ("getBoundingClientRect", "visibility", "display"))
+def test_the_filter_looks_at_what_actually_decides_visibility(expected):
     js = actions.SNAPSHOT_JS
-    for expected in ("getBoundingClientRect", "visibility", "display"):
-        assert expected in js, f"the snapshot does not look at {expected}"
+    assert expected in js, f"the snapshot does not look at {expected}"
 
 
 def test_the_query_reaches_elements_that_are_not_form_tags():
