@@ -124,13 +124,13 @@ def test_a_long_select_reports_its_size_instead_of_a_sample():
     assert 'name="country"' in out
 
 
-def test_a_short_select_keeps_every_option():
+@pytest.mark.parametrize("size", ("S", "M", "L"))
+def test_a_short_select_keeps_every_option(size):
     html = ('<html><body><select name="size">'
             '<option>S</option><option>M</option><option>L</option>'
             "</select></body></html>")
     out = clean.clean_page(html, "form")
-    for size in ("S", "M", "L"):
-        assert f">{size}<" in out
+    assert f">{size}<" in out
 
 
 # --- modes -----------------------------------------------------------------
