@@ -84,9 +84,8 @@ def test_closing_stdin_with_a_page_open_ends_the_server_and_its_browser():
 
         # A closed browser takes its temporary profile with it; a killed one
         # leaves it behind (7,308 of them were counted once on this machine).
-        deadline = time.time() + 10
-        while opened & _profiles() and time.time() < deadline:
-            time.sleep(0.5)
+        # The core removes the profile in the server's own process before it
+        # exits, so once wait() has returned there is nothing left to wait for.
         assert not (opened & _profiles()), (
             "the server exited in %.1f s but the browser's profile is still "
             "there: the browser was not closed, it was orphaned"
