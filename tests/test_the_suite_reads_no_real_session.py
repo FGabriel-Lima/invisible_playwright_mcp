@@ -26,6 +26,8 @@ from __future__ import annotations
 
 import os
 
+import pytest
+
 #: Read from `invisible_playwright_mcp.storage`, which is where `home()` lives. It used to be
 #: reached through `invisible_playwright_mcp.mcp.store`, which re-exported it - so this test
 #: proved its property through a name that was only forwarding.
@@ -203,12 +205,8 @@ def test_a_run_that_did_not_ask_for_an_engine_cannot_reach_one():
         "the local seal's build id is not this host's, so a real binary named by "
         "STEALTHFOX_BINARY would fail to verify under it")
     assert local["tag"] == load_seal(packaged_seal_path()).tag
-    try:
+    with pytest.raises(SealError, match="nothing to download"):
         ensure_binary()
-    except SealError as refused:
-        assert "nothing to download" in str(refused), str(refused)
-    else:
-        raise AssertionError("ensure_binary did not refuse under the local seal")
 
     # And it stayed empty, which is the claim itself rather than a proxy for it.
     # Order-dependent by construction: a test running after this one could still
