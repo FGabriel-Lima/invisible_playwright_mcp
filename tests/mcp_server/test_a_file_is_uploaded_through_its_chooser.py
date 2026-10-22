@@ -72,8 +72,9 @@ def test_a_file_inside_a_named_directory_is_sent_resolved(allowed, tmp_path):
 def test_a_file_outside_every_named_directory_is_refused(allowed, tmp_path):
     other = tmp_path / "secret.txt"
     other.write_text("x")
-    with pytest.raises(PermissionError, match="not inside a directory"):
+    with pytest.raises(PermissionError) as refused:
         actions.uploadable([str(other)], env=_env(allowed))
+    assert "not inside a directory" in str(refused.value), str(refused.value)
 
 
 def test_a_link_out_of_the_directory_is_judged_by_where_it_lands(allowed, tmp_path):
