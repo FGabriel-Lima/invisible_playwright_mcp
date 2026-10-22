@@ -269,16 +269,13 @@ def test_a_long_text_is_typed_key_by_key_to_the_end_in_the_background(url, monke
 
     async def body(w, session):
         said = await w.typing(actions.type_text, "#comments", text)
-        refused = None
-        try:
+        with pytest.raises(RuntimeError) as refused:
             await w.acting(actions.click, "#first")
-        except RuntimeError as exc:
-            refused = str(exc)
         while not w._typing["main"].task.done():
             await asyncio.sleep(0.5)
         news = await w.acting(actions.click, "#first")
         page = session.page()
-        return (said, refused, news, await page.locator("#comments").input_value(),
+        return (said, str(refused.value), news, await page.locator("#comments").input_value(),
                 await page.evaluate("__events"))
 
     said, refused, news, value, events = asyncio.run(_with_work(url, body))
