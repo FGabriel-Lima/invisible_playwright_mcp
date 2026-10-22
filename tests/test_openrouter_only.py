@@ -267,11 +267,11 @@ def test_base_url_constant_points_at_openrouter_over_https():
     assert parsed.netloc == "openrouter.ai"
 
 
-def test_no_other_provider_host_appears_in_the_module():
+@pytest.mark.parametrize("host", ("api.openai.com", "api.anthropic.com", "generativelanguage.googleapis.com"))
+def test_no_other_provider_host_appears_in_the_module(host):
     """Known-bad: a second, conditional base URL sneaking in beside the first."""
     source = Path(llm.__file__).read_text(encoding="utf-8")
-    for host in ("api.openai.com", "api.anthropic.com", "generativelanguage.googleapis.com"):
-        assert host not in source
+    assert host not in source
 
 
 def test_client_base_url_is_openrouter_even_with_openai_base_url_set(foreign_env):
