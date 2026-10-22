@@ -57,8 +57,9 @@ def _link(link, target):
 # --- the path guard -------------------------------------------------------------
 
 def test_with_no_directory_named_uploads_are_off(allowed):
-    with pytest.raises(RuntimeError, match="uploads are off"):
+    with pytest.raises(RuntimeError) as refused:
         actions.uploadable([str(allowed / "a.pdf")], env={})
+    assert "uploads are off" in str(refused.value), str(refused.value)
 
 
 def test_a_file_inside_a_named_directory_is_sent_resolved(allowed, tmp_path):
