@@ -398,16 +398,14 @@ def test_the_key_detector_is_not_vacuous(monkeypatch, link):
     assert key_leaked("sk-or-v1-CANARY")
     assert not key_leaked("nothing to see here")
 
-    @climod.main.command()
+    @click.command()
     @click.option("--openrouter-key", default=None)
-    def leaky(openrouter_key):  # pragma: no cover - registered then removed
+    def leaky(openrouter_key):  # pragma: no cover - monkeypatch removes it again
         click.echo("key is %s" % openrouter_key)
 
-    try:
-        out = run("leaky", "--openrouter-key", FAKE_KEY).output
-        assert key_leaked(out), "the detector cannot see a real leak"
-    finally:
-        climod.main.commands.pop("leaky", None)
+    monkeypatch.setitem(climod.main.commands, "leaky", leaky)
+    out = run("leaky", "--openrouter-key", FAKE_KEY).output
+    assert key_leaked(out), "the detector cannot see a real leak"
 
 
 def test_the_key_option_cannot_echo_its_own_value_in_a_usage_error():
