@@ -304,7 +304,7 @@ def test_only_one_place_knows_where_the_interface_is_stopped():
         "so nothing guarantees they ever stop: %s" % offenders)
 
 
-def test_the_brake_module_still_carries_all_three_defences():
+def test_the_brake_module_still_carries_all_three_defences(monkeypatch):
     """And the module has to still BE the three things, or the gate above is
     enforcing an import and nothing else.
 
@@ -354,15 +354,11 @@ def test_the_brake_module_still_carries_all_three_defences():
             seen["argv"] = list(argv)
             return None
 
-    monkey = getattr(_cli_brake, "CliRunner")
-    try:
-        _cli_brake.CliRunner = _Runner
-        _cli_brake.run_cli("ui")
-        imposed = list(seen["argv"])
-        _cli_brake.run_cli("ui", "--host", "127.0.0.1")
-        left_alone = list(seen["argv"])
-    finally:
-        _cli_brake.CliRunner = monkey
+    monkeypatch.setattr(_cli_brake, "CliRunner", _Runner)
+    _cli_brake.run_cli("ui")
+    imposed = list(seen["argv"])
+    _cli_brake.run_cli("ui", "--host", "127.0.0.1")
+    left_alone = list(seen["argv"])
 
     assert imposed[:3] == ["ui", "--host", _cli_brake.UNBINDABLE_HOST], (
         "the runner let `ui` reach an address it could bind: %r" % imposed)
