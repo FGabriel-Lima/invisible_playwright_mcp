@@ -156,15 +156,15 @@ def test_an_openai_key_in_the_environment_is_not_accepted(link, monkeypatch):
     assert link.calls == [], "the browser was launched despite the refusal"
 
 
-def test_the_command_offers_no_second_provider():
+@pytest.mark.parametrize("foreign", ("--openai", "--anthropic", "--api-base", "--base-url"))
+def test_the_command_offers_no_second_provider(foreign):
     """One provider, and the CLI must not imply otherwise.
 
     A flag named for another vendor would be a promise this package cannot keep:
     the loop talks to OpenRouter's endpoint and nothing else.
     """
     rendered = run("ui", "--help").output
-    for foreign in ("--openai", "--anthropic", "--api-base", "--base-url"):
-        assert foreign not in rendered, "the CLI offers %s" % foreign
+    assert foreign not in rendered, "the CLI offers %s" % foreign
 
 
 def test_the_cli_does_not_put_the_key_into_its_own_environment(link, monkeypatch):
