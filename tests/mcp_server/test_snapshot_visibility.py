@@ -100,7 +100,8 @@ def test_visibility_rules_are_expressed_once_each():
         "code; the filter is being copied per branch")
 
 
-def test_the_snapshot_does_not_deduplicate():
+@pytest.mark.parametrize("tell", ("doppioni", "firma", "dedup", "signature"))
+def test_the_snapshot_does_not_deduplicate(tell):
     """Measured on the same DOM: deduplicating by text removed 8.1% of the
     elements in exchange for 13% of the weight.
 
@@ -110,8 +111,7 @@ def test_the_snapshot_does_not_deduplicate():
     wearing a different name.
     """
     js = _code(actions.SNAPSHOT_JS)
-    for tell in ("doppioni", "firma", "dedup", "signature"):
-        assert tell not in js, f"a deduplication is back: {tell}"
+    assert tell not in js, f"a deduplication is back: {tell}"
 
 
 # --- a transparent control with a shown label -------------------------------
