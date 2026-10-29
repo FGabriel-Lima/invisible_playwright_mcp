@@ -86,24 +86,16 @@ def test_the_send_button_says_when_enter_will_queue():
         "signal at the exact moment the pointer arrives")
 
 
-@needs_node
-def test_clear_explains_itself_instead_of_going_dead():
-    """⛔ CLEAR WENT GREY FOR THE WHOLE RUN AND NEVER SAID WHY. A `disabled`
-    button fires no events - no hover, no click, and in this engine no tooltip -
-    so there was nowhere to hang the explanation. It carries `aria-disabled`
-    now, keeps the same look through the shared rule, and a press while the
-    agent works says what to do.
+# ⛔ CLEAR WENT GREY FOR THE WHOLE RUN AND NEVER SAID WHY. A `disabled`
+# button fires no events - no hover, no click, and in this engine no tooltip -
+# so there was nowhere to hang the explanation. It carries `aria-disabled`
+# now, keeps the same look through the shared rule, and a press while the
+# agent works says what to do.
+#
+# Known-bad, three: set `disabled` again; drop the sentence; let the press
+# clear anyway.
 
-    Known-bad, three: set `disabled` again; drop the sentence; let the press
-    clear anyway.
-    """
-    paint = whole("function paint(){", chr(10) + "}")
-    twostep = (whole("const arming = new WeakMap();", ";" + chr(10))
-               + whole("function dress(btn, how, armed){", chr(10) + "}") + chr(10)
-               + whole("function confirms(btn, resting, asking){", chr(10) + "}") + chr(10)
-               + whole("function disarm(btn){", chr(10) + "}"))
-    click = whole("fresh.onclick = () => {", chr(10) + "};")
-    harness = [
+CLEAR_CONTROL_OUTCOMES_HARNESS = [
         "const what = {textContent:''};",
         "globalThis.chip = {hidden:true, querySelector: () => what};",
         "globalThis.i = {value:'', placeholder:''};",
@@ -136,11 +128,29 @@ def test_clear_explains_itself_instead_of_going_dead():
         "process.stdout.write(JSON.stringify({look, whileWorking, once,",
         "  twice: twiceState, afterLeaving}));",
     ]
+
+@pytest.fixture
+def clear_control_outcomes():
+    """Prepare the scenario independently for each focused check."""
+    paint = whole("function paint(){", chr(10) + "}")
+    twostep = (whole("const arming = new WeakMap();", ";" + chr(10))
+               + whole("function dress(btn, how, armed){", chr(10) + "}") + chr(10)
+               + whole("function confirms(btn, resting, asking){", chr(10) + "}") + chr(10)
+               + whole("function disarm(btn){", chr(10) + "}"))
+    click = whole("fresh.onclick = () => {", chr(10) + "};")
+    harness = list(CLEAR_CONTROL_OUTCOMES_HARNESS)
     #: the stubs first, then the code that binds to them, then the actions:
     #: `fresh.onclick = ...` runs the moment the script is evaluated.
     at = harness.index("let said = [], asked = [];")
     got = run(chr(10).join(harness[:at]) + chr(10) + paint + chr(10) + twostep
               + chr(10) + click + chr(10) + chr(10).join(harness[at:]))
+
+    return got
+
+
+@needs_node
+def test_clear_explains_itself_instead_of_going_dead(clear_control_outcomes):
+    got = clear_control_outcomes
     assert got["look"] == "true", (
         "Clear does not say it is off while the agent works: %r" % (got,))
     assert got["whileWorking"]["asked"] == [], (
@@ -152,6 +162,11 @@ def test_clear_explains_itself_instead_of_going_dead():
     assert got["whileWorking"]["armed"] is False, (
         "a press during a run armed the control, so the next press after the "
         "run ends clears without asking: %r" % (got["whileWorking"],))
+
+
+@needs_node
+def test_clear_explains_itself_instead_of_going_dead_confirmation(clear_control_outcomes):
+    got = clear_control_outcomes
     # ⛔ TWO PRESSES, AND NO NATIVE DIALOG. `confirm` blocks the thread it is
     # called on: while it is up the frame pump stops, the transcript stops
     # drawing and the step clock freezes, on a product whose claim is that you
@@ -162,12 +177,22 @@ def test_clear_explains_itself_instead_of_going_dead():
     assert got["once"]["word"] == "Clear?" and "forgets everything" in got["once"]["why"], (
         "the armed control does not say what the next press will do: %r"
         % (got["once"],))
+
+
+@needs_node
+def test_clear_explains_itself_instead_of_going_dead_cleared(clear_control_outcomes):
+    got = clear_control_outcomes
     assert got["twice"]["asked"] == ["/chat/fresh"], (
         "the second press does not clear: %r" % (got["twice"],))
     assert got["twice"]["armed"] is False and got["twice"]["word"] == "Clear", (
         "the control stays armed after it has been used: %r" % (got["twice"],))
     assert got["twice"]["disabled"] is False, (
         "the control went dead rather than saying why")
+
+
+@needs_node
+def test_clear_explains_itself_instead_of_going_dead_leaving(clear_control_outcomes):
+    got = clear_control_outcomes
     # ⛔ AND LEAVING IT IS WHAT DISARMS IT, NOT A TIMER. The first version gave
     # the armed state five seconds, and a press on a control that had quietly
     # disarmed ARMS IT AGAIN - so anybody slower than the timer could never
@@ -179,6 +204,10 @@ def test_clear_explains_itself_instead_of_going_dead():
         "the control kept its armed state after the attention moved away, or "
         "lost it while the attention was still on it: %r" % (got["afterLeaving"],))
 
+
+@needs_node
+def test_clear_explains_itself_instead_of_going_dead_dialogs(clear_control_outcomes):
+    got = clear_control_outcomes
     assert "confirm(" not in CODE and "prompt(" not in CODE, (
         "a native dialog is back on this page, and it stops the live view, the "
         "transcript and the clocks for as long as it is up")
