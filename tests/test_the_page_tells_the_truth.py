@@ -1177,44 +1177,29 @@ def test_the_sessions_panel_puts_the_page_behind_it_out_of_play_other_owner(pane
         "it back fully lit on a page where nothing is live")
 
 
-def test_a_step_nobody_landed_stops_claiming_to_be_running():
-    """⛔ PRESS STOP WITH A CLICK IN FLIGHT AND THAT ROW BREATHED FOR EVER.
+# ⛔ PRESS STOP WITH A CLICK IN FLIGHT AND THAT ROW BREATHED FOR EVER.
+#
+# No result ever arrives for a step that was cancelled, and `land` is the only
+# thing that settles a row, so it kept `data-state="run"` - the breathing dot,
+# the present-tense verb - for the life of the page. A line in a log asserting
+# that something is happening, hours after it stopped.
+#
+# The same pass found the other half: a row that FAILED was marked by colour
+# alone, `--err` mixed at 8% against the row, which is 1.12:1, and it carried
+# the same present-tense verb as a row still in flight. Scrolling back through
+# a ten minute run to find what went wrong, there was nothing to look for.
+#
+# So the outcome is a word, and the past tense is kept for the one case that
+# earned it. Executed through the dispatcher, because the fact under test is
+# that the END OF A TURN settles a step nobody landed - a unit test of `close`
+# could not see a caller that never calls it.
+#
+# Known-bad, three: drop the `if(live) close(...)` from the `busy 0` branch,
+# and the row stays in the running state; give a failed or stopped step the
+# past tense, and the log asserts the thing happened; drop the word and the
+# outcome is a tint again.
 
-    No result ever arrives for a step that was cancelled, and `land` is the only
-    thing that settles a row, so it kept `data-state="run"` - the breathing dot,
-    the present-tense verb - for the life of the page. A line in a log asserting
-    that something is happening, hours after it stopped.
-
-    The same pass found the other half: a row that FAILED was marked by colour
-    alone, `--err` mixed at 8% against the row, which is 1.12:1, and it carried
-    the same present-tense verb as a row still in flight. Scrolling back through
-    a ten minute run to find what went wrong, there was nothing to look for.
-
-    So the outcome is a word, and the past tense is kept for the one case that
-    earned it. Executed through the dispatcher, because the fact under test is
-    that the END OF A TURN settles a step nobody landed - a unit test of `close`
-    could not see a caller that never calls it.
-
-    Known-bad, three: drop the `if(live) close(...)` from the `busy 0` branch,
-    and the row stays in the running state; give a failed or stopped step the
-    past tense, and the log asserts the thing happened; drop the word and the
-    outcome is a tint again.
-    """
-    import json
-    import shutil
-    import subprocess
-
-    import pytest
-
-    node = shutil.which("node")
-    if not node:
-        pytest.skip("needs node to EXECUTE the dispatcher")
-
-    def whole(start, end):
-        src = CODE[CODE.index(start):]
-        return src[:src.index(end) + len(end)]
-
-    harness = [
+STEP_OUTCOMES_HARNESS = [
         "globalThis.VERB = {browser_click: ['Clicking', 'Clicked']};",
         "globalThis.el = (tag, cls, t) => ({tag, cls, t});",
         "const made = () => {",
@@ -1265,6 +1250,23 @@ def test_a_step_nobody_landed_stops_claiming_to_be_running():
         "process.stdout.write(JSON.stringify({stopped, failed, worked}));",
     ]
 
+@pytest.fixture
+def step_outcomes():
+    """Prepare the scenario independently for each focused check."""
+    import json
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("needs node to EXECUTE the dispatcher")
+
+    def whole(start, end):
+        src = CODE[CODE.index(start):]
+        return src[:src.index(end) + len(end)]
+
+    harness = list(STEP_OUTCOMES_HARNESS)
+
     js = (whole("function echoes(", chr(10) + "}") + chr(10)
           + whole("function close(", chr(10) + "}") + chr(10)
           + whole("function land(", chr(10) + "}") + chr(10)
@@ -1273,9 +1275,14 @@ def test_a_step_nobody_landed_stops_claiming_to_be_running():
           + chr(10).join(harness))
     done = subprocess.run([node, "-e", js], capture_output=True, text=True,
                           encoding="utf-8", timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_a_step_nobody_landed_stops_claiming_to_be_running(step_outcomes):
+    got = step_outcomes
     assert got["stopped"]["state"] == "off", (
         "the end of a turn leaves a step in the running state, so its dot goes "
         "on breathing for the life of the page: %r" % (got["stopped"],))
@@ -1286,12 +1293,18 @@ def test_a_step_nobody_landed_stops_claiming_to_be_running():
         "nothing but a colour says the step did not finish: %r"
         % (got["stopped"],))
 
+
+def test_a_step_nobody_landed_stops_claiming_to_be_running_failed(step_outcomes):
+    got = step_outcomes
     assert got["failed"]["state"] == "err" and got["failed"]["verb"] == "Clicking", (
         "a failed step is written as though it had happened: %r" % (got["failed"],))
     assert "failed" in got["failed"]["words"], (
         "a failed step is marked by colour only, at 1.12:1, and reads with the "
         "same verb as a step still running: %r" % (got["failed"],))
 
+
+def test_a_step_nobody_landed_stops_claiming_to_be_running_worked(step_outcomes):
+    got = step_outcomes
     assert got["worked"]["state"] == "ok" and got["worked"]["verb"] == "Clicked", (
         "a step that worked lost its past tense: %r" % (got["worked"],))
     #: ⛔ AND A ROW WITH NOTHING TO OPEN LEAVES THE TAB ORDER. Every finished
