@@ -584,41 +584,26 @@ def test_the_parser_has_a_floor():
         "a defect inside one answer still takes the whole turn with it")
 
 
-def test_a_row_is_only_collapsed_when_it_actually_fits():
-    """⛔ MEASURED, NOT COUNTED, AND THE OLD CRITERION WAS WRONG IN KIND.
+# ⛔ MEASURED, NOT COUNTED, AND THE OLD CRITERION WAS WRONG IN KIND.
+#
+# A row keeps its disclosure only when its label FITS. It used to be decided
+# by counting the characters of the RESULT against a constant, while the row
+# also carries the verb and the argument, in a track the stylesheet sizes:
+# measured on the live page, 266px on some rows and 376 on others, against
+# the 416 the comment assumed. A row could therefore be cut off by the
+# ellipsis AND have had its chevron removed for being short, leaving its text
+# reachable only by resting a pointer on it.
+#
+# Measured on a real transcript of 82 rows before this change: 39 had no
+# chevron, 29 were cut, THIRTEEN were both. The same defect is recorded in
+# this file's history at 120 characters, where the fix was to lower the
+# number - which reduced it and could not remove it.
+#
+# Known-bad, two: decide by `text.length` again, and the row that does not fit
+# keeps no body; skip the batch and measure nothing, and every row claims to
+# fit.
 
-    A row keeps its disclosure only when its label FITS. It used to be decided
-    by counting the characters of the RESULT against a constant, while the row
-    also carries the verb and the argument, in a track the stylesheet sizes:
-    measured on the live page, 266px on some rows and 376 on others, against
-    the 416 the comment assumed. A row could therefore be cut off by the
-    ellipsis AND have had its chevron removed for being short, leaving its text
-    reachable only by resting a pointer on it.
-
-    Measured on a real transcript of 82 rows before this change: 39 had no
-    chevron, 29 were cut, THIRTEEN were both. The same defect is recorded in
-    this file's history at 120 characters, where the fix was to lower the
-    number - which reduced it and could not remove it.
-
-    Known-bad, two: decide by `text.length` again, and the row that does not fit
-    keeps no body; skip the batch and measure nothing, and every row claims to
-    fit.
-    """
-    import json
-    import shutil
-    import subprocess
-
-    import pytest
-
-    node = shutil.which("node")
-    if not node:
-        pytest.skip("needs node to EXECUTE the decision")
-
-    def whole(start, end):
-        src = CODE[CODE.index(start):]
-        return src[:src.index(end) + len(end)]
-
-    harness = [
+ROW_FIT_OUTCOMES_HARNESS = [
         "globalThis.VERB = {browser_navigate: ['Navigating','Navigated']};",
         "globalThis.el = (tag, cls, t) => ({tag, cls, t});",
         "const made = (fits) => {",
@@ -648,6 +633,23 @@ def test_a_row_is_only_collapsed_when_it_actually_fits():
         "land('result', 'one' + String.fromCharCode(10) + 'two', false); out.lines = look(d);",
         "process.stdout.write(JSON.stringify(out));",
     ]
+
+@pytest.fixture
+def row_fit_outcomes():
+    """Prepare the scenario independently for each focused check."""
+    import json
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("needs node to EXECUTE the decision")
+
+    def whole(start, end):
+        src = CODE[CODE.index(start):]
+        return src[:src.index(end) + len(end)]
+
+    harness = list(ROW_FIT_OUTCOMES_HARNESS)
     js = (whole("function echoes(", chr(10) + "}") + chr(10)
           + whole("function close(", chr(10) + "}") + chr(10)
           + whole("function land(", chr(10) + "}") + chr(10)
@@ -655,12 +657,21 @@ def test_a_row_is_only_collapsed_when_it_actually_fits():
           + chr(10).join(harness))
     done = subprocess.run([node, "-e", js], capture_output=True, text=True,
                           encoding="utf-8", timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_a_row_is_only_collapsed_when_it_actually_fits(row_fit_outcomes):
+    got = row_fit_outcomes
     assert got["fits"] == {"body": "none", "tab": -1, "opens": []}, (
         "a row that fits still opens something, so an ordinary run is a stack "
         "of accordions and the keyboard walks through every one: %r" % (got,))
+
+
+def test_a_row_is_only_collapsed_when_it_actually_fits_expandable_rows(row_fit_outcomes):
+    got = row_fit_outcomes
     assert got["cut"]["body"] is None and got["cut"]["tab"] == 0, (
         "a row whose label does not fit kept no way to open it, so its text is "
         "reachable only by hovering: %r" % (got,))
@@ -669,12 +680,16 @@ def test_a_row_is_only_collapsed_when_it_actually_fits():
     assert got["lines"]["opens"] == ["out"] and got["lines"]["body"] is None, (
         "output with a line break in it was put on a single-line row: %r" % (got,))
 
+
+def test_a_row_is_only_collapsed_when_it_actually_fits_row_selection(row_fit_outcomes):
+    got = row_fit_outcomes
     assert "const LONG" not in CODE, (
         "the character count is back, and it is a count in one unit standing in "
         "for a fit in another")
     assert "user-select:text; grid-column:2" in CODE, (
         "the label cannot be selected, so a truncated address cannot even be "
         "copied out")
+
 
 def test_no_pump_of_the_page_can_be_killed_by_one_exception():
     """⛔ A PUMP THAT RE-ARMS AFTER THE WORK DIES FOR GOOD ON THE FIRST
