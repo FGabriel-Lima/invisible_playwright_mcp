@@ -1321,42 +1321,26 @@ def test_a_step_nobody_landed_stops_claiming_to_be_running_worked(step_outcomes)
         "on the rows that make up most of a run: %r" % (got["worked"],))
 
 
-def test_the_queued_sentence_is_on_screen_and_survives_a_click():
-    """⛔ A SECOND ENTER DESTROYED THE FIRST SENTENCE, SILENTLY.
+# ⛔ A SECOND ENTER DESTROYED THE FIRST SENTENCE, SILENTLY.
+#
+# The chip read `1 message queued` - a literal in the markup - so the words
+# waiting to be sent were never drawn anywhere. Type a follow-up while the
+# agent works, think of a better wording, press Enter: the first one is gone,
+# with nothing on screen that ever showed it and no way back.
+#
+# The same control destroyed work in the other direction. Clicking the chip to
+# see what was queued assigned over the composer, so a draft in the box was
+# overwritten by the queued text - from the one control whose whole purpose is
+# to give typed words back.
+#
+# Executed, because both facts are about what `paint` and the click handler
+# DO: a scan can see the literal leave the markup and cannot see what replaces
+# it, which is how the string ended up in two places to begin with.
+#
+# Known-bad, two: leave the count in the markup and do not write the sentence;
+# assign over `i.value` again and the draft is eaten.
 
-    The chip read `1 message queued` - a literal in the markup - so the words
-    waiting to be sent were never drawn anywhere. Type a follow-up while the
-    agent works, think of a better wording, press Enter: the first one is gone,
-    with nothing on screen that ever showed it and no way back.
-
-    The same control destroyed work in the other direction. Clicking the chip to
-    see what was queued assigned over the composer, so a draft in the box was
-    overwritten by the queued text - from the one control whose whole purpose is
-    to give typed words back.
-
-    Executed, because both facts are about what `paint` and the click handler
-    DO: a scan can see the literal leave the markup and cannot see what replaces
-    it, which is how the string ended up in two places to begin with.
-
-    Known-bad, two: leave the count in the markup and do not write the sentence;
-    assign over `i.value` again and the draft is eaten.
-    """
-    import json
-    import shutil
-    import subprocess
-
-    import pytest
-
-    node = shutil.which("node")
-    if not node:
-        pytest.skip("needs node to EXECUTE the composer")
-
-    paint = CODE[CODE.index("function paint(){"):]
-    paint = paint[:paint.index(chr(10) + "}") + 2]
-    click = CODE[CODE.index("chip.onclick = "):]
-    click = click[:click.index("; };") + 4]
-
-    harness = [
+QUEUED_SENTENCE_OUTCOMES_HARNESS = [
         "const what = {textContent: ''};",
         "globalThis.chip = {hidden: true, querySelector: () => what,",
         "                   focus(){}};",
@@ -1377,6 +1361,24 @@ def test_the_queued_sentence_is_on_screen_and_survives_a_click():
         "process.stdout.write(JSON.stringify({shown, box: i.value}));",
     ]
 
+@pytest.fixture
+def queued_sentence_outcomes():
+    """Prepare the scenario independently for each focused check."""
+    import json
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("needs node to EXECUTE the composer")
+
+    paint = CODE[CODE.index("function paint(){"):]
+    paint = paint[:paint.index(chr(10) + "}") + 2]
+    click = CODE[CODE.index("chip.onclick = "):]
+    click = click[:click.index("; };") + 4]
+
+    harness = list(QUEUED_SENTENCE_OUTCOMES_HARNESS)
+
     #: the stubs first, then the code that binds to them, then the actions:
     #: `chip.onclick = ...` runs the moment the script is evaluated.
     at = harness.index("paint();")
@@ -1384,12 +1386,21 @@ def test_the_queued_sentence_is_on_screen_and_survives_a_click():
           + chr(10) + chr(10).join(harness[at:]))
     done = subprocess.run([node, "-e", js], capture_output=True, text=True,
                           encoding="utf-8", timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_the_queued_sentence_is_on_screen_and_survives_a_click(queued_sentence_outcomes):
+    got = queued_sentence_outcomes
     assert got["shown"] == "go to the second page and read the heading", (
         "the chip does not show the sentence it is holding, so replacing it is "
         "invisible and what was lost cannot even be read: %r" % (got["shown"],))
+
+
+def test_the_queued_sentence_is_on_screen_and_survives_a_click_composer(queued_sentence_outcomes):
+    got = queued_sentence_outcomes
     assert "and stop before sending anything" in got["box"], (
         "clicking the chip ate the draft in the box: %r" % (got["box"],))
     assert "go to the second page" in got["box"], (
