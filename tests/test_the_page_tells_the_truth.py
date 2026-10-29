@@ -984,34 +984,35 @@ def test_a_lead_in_is_not_drawn_and_the_answer_still_is_answer(lead_in_outcomes)
     assert got["afterEmpty"] == 1, "an empty hold drew something"
 
 
-def test_a_reopened_conversation_keeps_the_answer_of_every_turn():
-    """⛔ THE GATE NEXT DOOR RAN `flush` BOTH WAYS AND STILL LET THIS THROUGH,
-    which is the whole reason this one exists.
+# ⛔ THE GATE NEXT DOOR RAN `flush` BOTH WAYS AND STILL LET THIS THROUGH,
+# which is the whole reason this one exists.
+#
+# Dropping the lead-in is decided by the argument the dispatcher passes, and
+# `case 'you'` was passing the one that means `this had something after it`.
+# It does not: a sentence still held when the PERSON speaks had nothing after
+# it in its own turn, which is exactly what `busy 0` means.
+#
+# And `busy` is deliberately kept OUT of the history - replaying a spinner
+# for work that finished an hour ago would be a lie - so on a reopened
+# conversation that branch is the only one that can ever draw the answer of a
+# turn that is not the last. Measured on a real transcript of three turns an
+# hour after the change shipped: one answer drawn, two silently gone.
+#
+# So this replays a transcript through the DISPATCHER, which is where the
+# argument is chosen, rather than through the function that receives it. A
+# unit test of a function cannot see a caller passing the wrong thing, and
+# that is not a gap in the other gate - it is a different question.
+#
+# Known-bad: hand `case 'you'` the lead-in argument again. One answer comes
+# back instead of two.
 
-    Dropping the lead-in is decided by the argument the dispatcher passes, and
-    `case 'you'` was passing the one that means `this had something after it`.
-    It does not: a sentence still held when the PERSON speaks had nothing after
-    it in its own turn, which is exactly what `busy 0` means.
 
-    And `busy` is deliberately kept OUT of the history - replaying a spinner
-    for work that finished an hour ago would be a lie - so on a reopened
-    conversation that branch is the only one that can ever draw the answer of a
-    turn that is not the last. Measured on a real transcript of three turns an
-    hour after the change shipped: one answer drawn, two silently gone.
-
-    So this replays a transcript through the DISPATCHER, which is where the
-    argument is chosen, rather than through the function that receives it. A
-    unit test of a function cannot see a caller passing the wrong thing, and
-    that is not a gap in the other gate - it is a different question.
-
-    Known-bad: hand `case 'you'` the lead-in argument again. One answer comes
-    back instead of two.
-    """
+@pytest.fixture
+def reopened_conversation_outcomes():
+    """Prepare the scenario independently for each focused check."""
     import json
     import shutil
     import subprocess
-
-    import pytest
 
     node = shutil.which("node")
     if not node:
@@ -1026,12 +1027,21 @@ def test_a_reopened_conversation_keeps_the_answer_of_every_turn():
           + "let drawn = [];\nglobalThis.hold = null; globalThis.busyNow = false;\nlet announced = [], later = null;\nglobalThis.quiet = 0;\nglobalThis.thread = {setAttribute(k, v){ announced.push(v); }};\nglobalThis.clearTimeout = () => {};\nglobalThis.setTimeout = (fn) => { later = fn; return 1; };\nglobalThis.live = null; globalThis.timer = 0; globalThis.queued = null;\nglobalThis.turnsEnded = 0;\nglobalThis.LEAD = /^(I will |I'll |Let me )/i;\nglobalThis.el = (tag, cls, t) => ({tag, cls, t, kids: [],\n                                   appendChild(k){ this.kids.push(k); }});\nglobalThis.rich = t => ({tag: 'rich', t});\nglobalThis.put = n => drawn.push(n);\nglobalThis.$ = () => ({textContent: '', hidden: false});\nfor (const name of ['wipe','waiting','waited','drawChats','paint',\n                    'settleOnce','newTurn','step','land','orphan',\n                    'setQueued','send','clearInterval'])\n  globalThis[name] = () => {};\n\nconst feed = m => onEvent({data: JSON.stringify(m)});\nconst history = [\n  {kind:'you',    text:'first instruction',  replay:true},\n  {kind:'said',   text:'Let me open the page.', replay:true},\n  {kind:'tool',   text:'browser_navigate a', replay:true},\n  {kind:'result', text:'ok',                 replay:true},\n  {kind:'said',   text:'THE FIRST ANSWER.',  replay:true},\n  {kind:'you',    text:'second instruction', replay:true},\n  {kind:'tool',   text:'browser_navigate b', replay:true},\n  {kind:'result', text:'ok',                 replay:true},\n  {kind:'said',   text:'THE SECOND ANSWER.', replay:true},\n];\nhistory.forEach(feed);\n/* what the server sends after the replay, once it is idle */\nfeed({kind:'busy', text:'0'});\nconst answers = drawn.filter(d => d.cls === 'answer')\n                     .map(d => (d.kids[0] && d.kids[0].t) || '');\nif (later) later();\nprocess.stdout.write(JSON.stringify({answers, total: drawn.length, announced}));")
     done = subprocess.run([node, "-e", js], capture_output=True, text=True,
                           encoding="utf-8", timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_a_reopened_conversation_keeps_the_answer_of_every_turn(reopened_conversation_outcomes):
+    got = reopened_conversation_outcomes
     assert got["answers"] == ["THE FIRST ANSWER.", "THE SECOND ANSWER."], (
         "a reopened conversation lost the answer of a turn that is not the "
         "last: %r" % (got["answers"],))
+
+
+def test_a_reopened_conversation_keeps_the_answer_of_every_turn_announcements(reopened_conversation_outcomes):
+    got = reopened_conversation_outcomes
     #: ⛔ AND THE REPLAY IS NOT READ OUT. The transcript is the page's only
     #: live region, and a reconnect pours the whole conversation back into it:
     #: a screen reader announced an hour of finished work from the top while
@@ -1044,6 +1054,9 @@ def test_a_reopened_conversation_keeps_the_answer_of_every_turn():
         "the live region is left switched off after a replay, so nothing the "
         "agent does afterwards is announced at all: %r" % (got["announced"],))
 
+
+def test_a_reopened_conversation_keeps_the_answer_of_every_turn_lead_ins(reopened_conversation_outcomes):
+    got = reopened_conversation_outcomes
     #: and the lead-in is still dropped, which is the thing this must not undo.
     assert not any("open the page" in a for a in got["answers"]), (
         "the sentence that came with the tool calls came back as an answer")
