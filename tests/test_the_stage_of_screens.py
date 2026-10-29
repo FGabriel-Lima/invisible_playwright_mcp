@@ -229,6 +229,12 @@ def test_the_state_word_says_nothing_when_it_would_repeat_the_tab():
         "the states the word stays quiet for are %s: live and frozen repeat the "
         "switch beside them and idle names an empty room, and anything else in "
         "that list is a word somebody needs" % sorted(re.findall(r"'([a-z]+)'", said)))
+
+
+
+def test_the_state_word_starts_offscreen_and_remains_accessible():
+    """Hide redundant words visually without hiding announcements."""
+    code = re.sub(r"/\*.*?\*/", "", PAGE, flags=re.S)
     # ⛔ AND THE MARKUP STARTS THE WAY `say` WOULD DRAW IT. Nothing calls
     # `say('idle')` on a first load - the state only moves when a browser does -
     # so with the clipping rule gone the word came back on screen in capitals,
