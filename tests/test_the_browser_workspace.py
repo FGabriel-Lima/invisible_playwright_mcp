@@ -370,23 +370,25 @@ def test_the_page_declares_no_identifier_twice():
         "syntax error that stops the whole file from running: %s" % sorted(set(twice)))
 
 
-def test_no_top_level_declaration_uses_a_name_declared_later():
-    """⛔ THE SAME DAMAGE BY A DIFFERENT MECHANISM, and the duplicate-name gate
-    above did not see it. `const QKEY = 'aihawk.queued.' + here;` was written
-    forty lines above `let here`, and a top-level binding read inside its own
-    dead zone throws when the script is evaluated - which kills the whole file:
-    no event stream, no session column, no workspace, and the page still
-    renders. All 440 tests were green with the page dead, the second time in
-    two days that a suite could not see a page a browser cannot run.
+# ⛔ THE SAME DAMAGE BY A DIFFERENT MECHANISM, and the duplicate-name gate
+# above did not see it. `const QKEY = 'aihawk.queued.' + here;` was written
+# forty lines above `let here`, and a top-level binding read inside its own
+# dead zone throws when the script is evaluated - which kills the whole file:
+# no event stream, no session column, no workspace, and the page still
+# renders. All 440 tests were green with the page dead, the second time in
+# two days that a suite could not see a page a browser cannot run.
+#
+# Both gates check the same thing from two sides: nothing at the top level of
+# this script may depend on the ORDER of the lines being right. The real fix
+# for a value that needs another is a function, which is evaluated when it is
+# called.
+#
+# Only initialisers are read, not function bodies: a function may use anything
+# declared anywhere, because it runs after the script has finished.
 
-    Both gates check the same thing from two sides: nothing at the top level of
-    this script may depend on the ORDER of the lines being right. The real fix
-    for a value that needs another is a function, which is evaluated when it is
-    called.
-
-    Only initialisers are read, not function bodies: a function may use anything
-    declared anywhere, because it runs after the script has finished.
-    """
+@pytest.fixture
+def script_declarations():
+    """Collect top-level declarations in source order."""
     script = PAGE[PAGE.index("<script"):]
     lines = script.split(chr(10))
 
@@ -402,7 +404,12 @@ def test_no_top_level_declaration_uses_a_name_declared_later():
             if re.fullmatch(r"[A-Za-z_$][\w$]*", name or "") and name not in declared:
                 declared[name] = n
                 order.append((n, name, line))
+    return declared, order
 
+
+def test_no_top_level_declaration_uses_a_name_declared_later(script_declarations):
+    """Initializers must not use bindings declared later in the script."""
+    declared, order = script_declarations
     early = []
     for n, name, line in order:
         init = line.split("=", 1)[1]
