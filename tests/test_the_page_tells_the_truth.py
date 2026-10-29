@@ -1062,53 +1062,35 @@ def test_a_reopened_conversation_keeps_the_answer_of_every_turn_lead_ins(reopene
         "the sentence that came with the tool calls came back as an answer")
 
 
-def test_the_sessions_panel_puts_the_page_behind_it_out_of_play():
-    """⛔ IT COVERED HALF THE CONVERSATION AND LEFT IT LOOKING READABLE.
+# ⛔ IT COVERED HALF THE CONVERSATION AND LEFT IT LOOKING READABLE.
+#
+# Measured 2026-09-12 in a real browser at eight widths, drawer open: 240px
+# off the front of every line at every desktop width - 48% of the measure at
+# 1440px, 61% at 960px, 29 rows buried at once and one of them whole. The
+# owner read it off his own screen before any gate did: lines beginning
+# `.com/it/ navigated to`, with the verb and the step number underneath the
+# panel.
+#
+# The gate that stood here asserted that the drawer stopped SHORT of the
+# composer, which was the defect of the day before and is now a question that
+# cannot be asked: with the page behind it inert, the panel may cover the
+# input, because the input is out of play anyway. So the property moved. It
+# is no longer where the panel stops, it is what it holds while it is up.
+#
+# Three things are executed rather than read, because the text cannot answer
+# any of them: that opening holds both panes and closing releases them, that
+# the keyboard goes in and comes back, and that a hold SOMEBODY ELSE is
+# keeping survives this panel letting go of its own. The last one is why
+# `outOfPlay` exists at all - a conversation deleted in another tab holds the
+# browser pane, and a plain `inert = false` from here would bring that pane
+# back fully lit on a page where nothing is live.
+#
+# Known-bad, all three run: write `box.inert = open` in place of the call to
+# `outOfPlay` and the deleted pane revives; drop the `hadFocus` check and the
+# keyboard is left standing on the document; drop the focus into the panel
+# and it never arrives.
 
-    Measured 2026-09-12 in a real browser at eight widths, drawer open: 240px
-    off the front of every line at every desktop width - 48% of the measure at
-    1440px, 61% at 960px, 29 rows buried at once and one of them whole. The
-    owner read it off his own screen before any gate did: lines beginning
-    `.com/it/ navigated to`, with the verb and the step number underneath the
-    panel.
-
-    The gate that stood here asserted that the drawer stopped SHORT of the
-    composer, which was the defect of the day before and is now a question that
-    cannot be asked: with the page behind it inert, the panel may cover the
-    input, because the input is out of play anyway. So the property moved. It
-    is no longer where the panel stops, it is what it holds while it is up.
-
-    Three things are executed rather than read, because the text cannot answer
-    any of them: that opening holds both panes and closing releases them, that
-    the keyboard goes in and comes back, and that a hold SOMEBODY ELSE is
-    keeping survives this panel letting go of its own. The last one is why
-    `outOfPlay` exists at all - a conversation deleted in another tab holds the
-    browser pane, and a plain `inert = false` from here would bring that pane
-    back fully lit on a page where nothing is live.
-
-    Known-bad, all three run: write `box.inert = open` in place of the call to
-    `outOfPlay` and the deleted pane revives; drop the `hadFocus` check and the
-    keyboard is left standing on the document; drop the focus into the panel
-    and it never arrives.
-    """
-    import json
-    import shutil
-    import subprocess
-
-    import pytest
-
-    node = shutil.which("node")
-    if not node:
-        pytest.skip("needs node to EXECUTE the panel rather than read it")
-
-    #: `outOfPlay` and its map, from the file that owns them.
-    owner = CODE[CODE.index("const heldBy = new WeakMap();"):]
-    owner = owner[:owner.index(chr(10) + "}") + 2]
-    #: the key, the panel's own line and `showRail`, up to its first caller.
-    panel = CODE[CODE.index("const RAILKEY"):]
-    panel = panel[:panel.index("$('railtab').onclick")]
-
-    harness = [
+PANEL_FOCUS_OUTCOMES_HARNESS = [
         "const made = {};",
         "const box = id => (made[id] = {id, hidden:false, inert:false,",
         "  attrs:{}, kids:[],",
@@ -1139,25 +1121,56 @@ def test_the_sessions_panel_puts_the_page_behind_it_out_of_play():
         "                                     survives: made.right.inert}));",
     ]
 
+@pytest.fixture
+def panel_focus_outcomes():
+    """Prepare the scenario independently for each focused check."""
+    import json
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("needs node to EXECUTE the panel rather than read it")
+
+    #: `outOfPlay` and its map, from the file that owns them.
+    owner = CODE[CODE.index("const heldBy = new WeakMap();"):]
+    owner = owner[:owner.index(chr(10) + "}") + 2]
+    #: the key, the panel's own line and `showRail`, up to its first caller.
+    panel = CODE[CODE.index("const RAILKEY"):]
+    panel = panel[:panel.index("$('railtab').onclick")]
+
+    harness = list(PANEL_FOCUS_OUTCOMES_HARNESS)
+
     done = subprocess.run(
         [node, "-e", CARRIED + chr(10) + owner + chr(10) + panel
          + chr(10) + chr(10).join(harness)],
         capture_output=True, text=True, encoding="utf-8", timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_the_sessions_panel_puts_the_page_behind_it_out_of_play(panel_focus_outcomes):
+    got = panel_focus_outcomes
     assert got["opened"] == {"left": True, "right": True, "hidden": False,
                              "focus": "newchat", "expanded": "true",
                              "remembered": "1"}, (
         "opening the panel does not take the page behind it out of play, or "
         "does not take the keyboard with it: %r" % (got["opened"],))
 
+
+def test_the_sessions_panel_puts_the_page_behind_it_out_of_play_closed(panel_focus_outcomes):
+    got = panel_focus_outcomes
     assert got["closed"] == {"left": False, "right": False, "hidden": True,
                              "focus": "railtab", "expanded": "false",
                              "remembered": "0"}, (
         "closing the panel leaves the page held, or leaves the keyboard "
         "standing on the document: %r" % (got["closed"],))
 
+
+def test_the_sessions_panel_puts_the_page_behind_it_out_of_play_other_owner(panel_focus_outcomes):
+    got = panel_focus_outcomes
     assert got["survives"] is True, (
         "closing the panel released a hold it never took: a conversation "
         "deleted elsewhere had the browser pane out of play, and this brought "
