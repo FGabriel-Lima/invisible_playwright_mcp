@@ -1,0 +1,1199 @@
+{
+  "src/invisible_playwright_mcp/actions_help.py": {
+    "loc": 83,
+    "lloc": 47,
+    "sloc": 45,
+    "comments": 12,
+    "multi": 12,
+    "blank": 14,
+    "single_comments": 12
+  },
+  "src/invisible_playwright_mcp/agent.py": {
+    "loc": 485,
+    "lloc": 130,
+    "sloc": 150,
+    "comments": 109,
+    "multi": 154,
+    "blank": 72,
+    "single_comments": 109
+  },
+  "src/invisible_playwright_mcp/chat.py": {
+    "loc": 309,
+    "lloc": 120,
+    "sloc": 112,
+    "comments": 78,
+    "multi": 80,
+    "blank": 36,
+    "single_comments": 81
+  },
+  "src/invisible_playwright_mcp/chats.py": {
+    "loc": 96,
+    "lloc": 42,
+    "sloc": 45,
+    "comments": 2,
+    "multi": 28,
+    "blank": 18,
+    "single_comments": 5
+  },
+  "src/invisible_playwright_mcp/cli.py": {
+    "loc": 304,
+    "lloc": 126,
+    "sloc": 140,
+    "comments": 60,
+    "multi": 54,
+    "blank": 49,
+    "single_comments": 61
+  },
+  "src/invisible_playwright_mcp/engine.py": {
+    "loc": 202,
+    "lloc": 103,
+    "sloc": 101,
+    "comments": 16,
+    "multi": 61,
+    "blank": 24,
+    "single_comments": 16
+  },
+  "src/invisible_playwright_mcp/env.py": {
+    "loc": 88,
+    "lloc": 29,
+    "sloc": 33,
+    "comments": 16,
+    "multi": 24,
+    "blank": 15,
+    "single_comments": 16
+  },
+  "src/invisible_playwright_mcp/link.py": {
+    "loc": 272,
+    "lloc": 111,
+    "sloc": 100,
+    "comments": 35,
+    "multi": 96,
+    "blank": 38,
+    "single_comments": 38
+  },
+  "src/invisible_playwright_mcp/llm.py": {
+    "loc": 39,
+    "lloc": 19,
+    "sloc": 23,
+    "comments": 5,
+    "multi": 0,
+    "blank": 10,
+    "single_comments": 6
+  },
+  "src/invisible_playwright_mcp/quiet.py": {
+    "loc": 41,
+    "lloc": 15,
+    "sloc": 13,
+    "comments": 0,
+    "multi": 21,
+    "blank": 7,
+    "single_comments": 0
+  },
+  "src/invisible_playwright_mcp/routes.py": {
+    "loc": 434,
+    "lloc": 167,
+    "sloc": 153,
+    "comments": 122,
+    "multi": 92,
+    "blank": 65,
+    "single_comments": 124
+  },
+  "src/invisible_playwright_mcp/runner.py": {
+    "loc": 142,
+    "lloc": 36,
+    "sloc": 34,
+    "comments": 12,
+    "multi": 70,
+    "blank": 26,
+    "single_comments": 12
+  },
+  "src/invisible_playwright_mcp/sessions.py": {
+    "loc": 290,
+    "lloc": 98,
+    "sloc": 87,
+    "comments": 51,
+    "multi": 117,
+    "blank": 35,
+    "single_comments": 51
+  },
+  "src/invisible_playwright_mcp/storage.py": {
+    "loc": 199,
+    "lloc": 62,
+    "sloc": 55,
+    "comments": 9,
+    "multi": 95,
+    "blank": 39,
+    "single_comments": 10
+  },
+  "src/invisible_playwright_mcp/_version.py": {
+    "loc": 155,
+    "lloc": 52,
+    "sloc": 50,
+    "comments": 12,
+    "multi": 68,
+    "blank": 25,
+    "single_comments": 12
+  },
+  "src/invisible_playwright_mcp/__init__.py": {
+    "loc": 7,
+    "lloc": 3,
+    "sloc": 2,
+    "comments": 3,
+    "multi": 0,
+    "blank": 1,
+    "single_comments": 4
+  },
+  "src/invisible_playwright_mcp/__main__.py": {
+    "loc": 4,
+    "lloc": 3,
+    "sloc": 3,
+    "comments": 0,
+    "multi": 0,
+    "blank": 1,
+    "single_comments": 0
+  },
+  "src/invisible_playwright_mcp/mcp/actions.py": {
+    "loc": 1350,
+    "lloc": 399,
+    "sloc": 807,
+    "comments": 151,
+    "multi": 245,
+    "blank": 149,
+    "single_comments": 149
+  },
+  "src/invisible_playwright_mcp/mcp/clean.py": {
+    "loc": 732,
+    "lloc": 228,
+    "sloc": 355,
+    "comments": 208,
+    "multi": 80,
+    "blank": 102,
+    "single_comments": 195
+  },
+  "src/invisible_playwright_mcp/mcp/identity.py": {
+    "loc": 214,
+    "lloc": 74,
+    "sloc": 82,
+    "comments": 6,
+    "multi": 85,
+    "blank": 40,
+    "single_comments": 7
+  },
+  "src/invisible_playwright_mcp/mcp/plan.py": {
+    "loc": 310,
+    "lloc": 90,
+    "sloc": 96,
+    "comments": 48,
+    "multi": 116,
+    "blank": 49,
+    "single_comments": 49
+  },
+  "src/invisible_playwright_mcp/mcp/process.py": {
+    "loc": 49,
+    "lloc": 35,
+    "sloc": 33,
+    "comments": 1,
+    "multi": 7,
+    "blank": 7,
+    "single_comments": 2
+  },
+  "src/invisible_playwright_mcp/mcp/proxy.py": {
+    "loc": 28,
+    "lloc": 18,
+    "sloc": 20,
+    "comments": 0,
+    "multi": 4,
+    "blank": 4,
+    "single_comments": 0
+  },
+  "src/invisible_playwright_mcp/mcp/server.py": {
+    "loc": 690,
+    "lloc": 127,
+    "sloc": 176,
+    "comments": 174,
+    "multi": 219,
+    "blank": 121,
+    "single_comments": 174
+  },
+  "src/invisible_playwright_mcp/mcp/session.py": {
+    "loc": 287,
+    "lloc": 131,
+    "sloc": 125,
+    "comments": 66,
+    "multi": 62,
+    "blank": 35,
+    "single_comments": 65
+  },
+  "src/invisible_playwright_mcp/mcp/store.py": {
+    "loc": 123,
+    "lloc": 25,
+    "sloc": 36,
+    "comments": 36,
+    "multi": 38,
+    "blank": 22,
+    "single_comments": 27
+  },
+  "src/invisible_playwright_mcp/mcp/work.py": {
+    "loc": 755,
+    "lloc": 318,
+    "sloc": 323,
+    "comments": 159,
+    "multi": 197,
+    "blank": 78,
+    "single_comments": 157
+  },
+  "src/invisible_playwright_mcp/mcp/__init__.py": {
+    "loc": 42,
+    "lloc": 7,
+    "sloc": 7,
+    "comments": 30,
+    "multi": 0,
+    "blank": 4,
+    "single_comments": 31
+  },
+  "src/invisible_playwright_mcp/ui/__init__.py": {
+    "loc": 100,
+    "lloc": 22,
+    "sloc": 39,
+    "comments": 23,
+    "multi": 34,
+    "blank": 20,
+    "single_comments": 7
+  },
+  "tests/conftest.py": {
+    "loc": 274,
+    "lloc": 120,
+    "sloc": 115,
+    "comments": 24,
+    "multi": 101,
+    "blank": 34,
+    "single_comments": 24
+  },
+  "tests/test_agent.py": {
+    "loc": 87,
+    "lloc": 73,
+    "sloc": 52,
+    "comments": 0,
+    "multi": 9,
+    "blank": 26,
+    "single_comments": 0
+  },
+  "tests/test_agent_loop.py": {
+    "loc": 1296,
+    "lloc": 539,
+    "sloc": 685,
+    "comments": 27,
+    "multi": 322,
+    "blank": 259,
+    "single_comments": 30
+  },
+  "tests/test_a_failed_selector_says_what_to_do.py": {
+    "loc": 228,
+    "lloc": 120,
+    "sloc": 120,
+    "comments": 2,
+    "multi": 51,
+    "blank": 53,
+    "single_comments": 4
+  },
+  "tests/test_a_reconnection_keeps_what_you_typed.py": {
+    "loc": 192,
+    "lloc": 55,
+    "sloc": 123,
+    "comments": 9,
+    "multi": 38,
+    "blank": 27,
+    "single_comments": 4
+  },
+  "tests/test_a_rule_is_written_where_it_is_applied.py": {
+    "loc": 110,
+    "lloc": 47,
+    "sloc": 51,
+    "comments": 2,
+    "multi": 37,
+    "blank": 20,
+    "single_comments": 2
+  },
+  "tests/test_a_screen_says_what_it_is_showing.py": {
+    "loc": 353,
+    "lloc": 101,
+    "sloc": 213,
+    "comments": 18,
+    "multi": 82,
+    "blank": 39,
+    "single_comments": 19
+  },
+  "tests/test_a_silence_says_why.py": {
+    "loc": 57,
+    "lloc": 29,
+    "sloc": 32,
+    "comments": 0,
+    "multi": 15,
+    "blank": 10,
+    "single_comments": 0
+  },
+  "tests/test_a_workflow_runs_on_something_that_happens.py": {
+    "loc": 176,
+    "lloc": 68,
+    "sloc": 79,
+    "comments": 12,
+    "multi": 58,
+    "blank": 27,
+    "single_comments": 12
+  },
+  "tests/test_cli_surface.py": {
+    "loc": 418,
+    "lloc": 188,
+    "sloc": 200,
+    "comments": 18,
+    "multi": 94,
+    "blank": 104,
+    "single_comments": 20
+  },
+  "tests/test_engine.py": {
+    "loc": 189,
+    "lloc": 141,
+    "sloc": 134,
+    "comments": 0,
+    "multi": 15,
+    "blank": 39,
+    "single_comments": 1
+  },
+  "tests/test_engine_first.py": {
+    "loc": 138,
+    "lloc": 86,
+    "sloc": 83,
+    "comments": 0,
+    "multi": 11,
+    "blank": 42,
+    "single_comments": 2
+  },
+  "tests/test_env_file.py": {
+    "loc": 123,
+    "lloc": 54,
+    "sloc": 51,
+    "comments": 0,
+    "multi": 36,
+    "blank": 36,
+    "single_comments": 0
+  },
+  "tests/test_every_control_says_what_it_does.py": {
+    "loc": 449,
+    "lloc": 142,
+    "sloc": 281,
+    "comments": 55,
+    "multi": 46,
+    "blank": 64,
+    "single_comments": 58
+  },
+  "tests/test_every_tool_reads_as_english.py": {
+    "loc": 74,
+    "lloc": 29,
+    "sloc": 27,
+    "comments": 0,
+    "multi": 26,
+    "blank": 21,
+    "single_comments": 0
+  },
+  "tests/test_import.py": {
+    "loc": 3,
+    "lloc": 3,
+    "sloc": 3,
+    "comments": 0,
+    "multi": 0,
+    "blank": 0,
+    "single_comments": 0
+  },
+  "tests/test_key_isolation.py": {
+    "loc": 644,
+    "lloc": 285,
+    "sloc": 255,
+    "comments": 59,
+    "multi": 187,
+    "blank": 142,
+    "single_comments": 60
+  },
+  "tests/test_llm.py": {
+    "loc": 18,
+    "lloc": 15,
+    "sloc": 11,
+    "comments": 3,
+    "multi": 0,
+    "blank": 4,
+    "single_comments": 3
+  },
+  "tests/test_no_tracked_file_carries_a_control_byte.py": {
+    "loc": 54,
+    "lloc": 22,
+    "sloc": 24,
+    "comments": 2,
+    "multi": 17,
+    "blank": 11,
+    "single_comments": 2
+  },
+  "tests/test_one_conversation_one_server.py": {
+    "loc": 265,
+    "lloc": 130,
+    "sloc": 130,
+    "comments": 6,
+    "multi": 67,
+    "blank": 62,
+    "single_comments": 6
+  },
+  "tests/test_one_place_reads_a_saved_file.py": {
+    "loc": 124,
+    "lloc": 67,
+    "sloc": 56,
+    "comments": 2,
+    "multi": 38,
+    "blank": 27,
+    "single_comments": 3
+  },
+  "tests/test_one_reader_of_a_tool_result.py": {
+    "loc": 142,
+    "lloc": 49,
+    "sloc": 66,
+    "comments": 5,
+    "multi": 45,
+    "blank": 25,
+    "single_comments": 6
+  },
+  "tests/test_openrouter_only.py": {
+    "loc": 471,
+    "lloc": 208,
+    "sloc": 220,
+    "comments": 32,
+    "multi": 116,
+    "blank": 97,
+    "single_comments": 38
+  },
+  "tests/test_publishing_surfaces.py": {
+    "loc": 724,
+    "lloc": 420,
+    "sloc": 412,
+    "comments": 68,
+    "multi": 129,
+    "blank": 115,
+    "single_comments": 68
+  },
+  "tests/test_readme_offers_both.py": {
+    "loc": 255,
+    "lloc": 96,
+    "sloc": 125,
+    "comments": 21,
+    "multi": 62,
+    "blank": 45,
+    "single_comments": 23
+  },
+  "tests/test_real_cli.py": {
+    "loc": 44,
+    "lloc": 17,
+    "sloc": 22,
+    "comments": 6,
+    "multi": 8,
+    "blank": 8,
+    "single_comments": 6
+  },
+  "tests/test_release_pages.py": {
+    "loc": 441,
+    "lloc": 177,
+    "sloc": 200,
+    "comments": 70,
+    "multi": 110,
+    "blank": 65,
+    "single_comments": 66
+  },
+  "tests/test_runner.py": {
+    "loc": 48,
+    "lloc": 28,
+    "sloc": 27,
+    "comments": 3,
+    "multi": 10,
+    "blank": 11,
+    "single_comments": 0
+  },
+  "tests/test_the_answer_pane_draws_markdown.py": {
+    "loc": 411,
+    "lloc": 177,
+    "sloc": 198,
+    "comments": 16,
+    "multi": 115,
+    "blank": 79,
+    "single_comments": 19
+  },
+  "tests/test_the_browser_workspace.py": {
+    "loc": 528,
+    "lloc": 204,
+    "sloc": 214,
+    "comments": 60,
+    "multi": 151,
+    "blank": 103,
+    "single_comments": 60
+  },
+  "tests/test_the_bundle_holds_only_the_server.py": {
+    "loc": 49,
+    "lloc": 19,
+    "sloc": 30,
+    "comments": 0,
+    "multi": 9,
+    "blank": 10,
+    "single_comments": 0
+  },
+  "tests/test_the_codex_plugin_really_installs.py": {
+    "loc": 108,
+    "lloc": 59,
+    "sloc": 63,
+    "comments": 8,
+    "multi": 19,
+    "blank": 18,
+    "single_comments": 8
+  },
+  "tests/test_the_contrast_floors_are_computed.py": {
+    "loc": 173,
+    "lloc": 70,
+    "sloc": 78,
+    "comments": 11,
+    "multi": 51,
+    "blank": 33,
+    "single_comments": 11
+  },
+  "tests/test_the_event_stream_wire_format.py": {
+    "loc": 296,
+    "lloc": 163,
+    "sloc": 183,
+    "comments": 11,
+    "multi": 52,
+    "blank": 48,
+    "single_comments": 13
+  },
+  "tests/test_the_extension_archive_holds_only_the_extension.py": {
+    "loc": 57,
+    "lloc": 34,
+    "sloc": 35,
+    "comments": 0,
+    "multi": 8,
+    "blank": 14,
+    "single_comments": 0
+  },
+  "tests/test_the_floor_carries_what_the_tools_need.py": {
+    "loc": 89,
+    "lloc": 38,
+    "sloc": 47,
+    "comments": 3,
+    "multi": 26,
+    "blank": 13,
+    "single_comments": 3
+  },
+  "tests/test_the_gate_says_which_tree_it_judged.py": {
+    "loc": 139,
+    "lloc": 61,
+    "sloc": 61,
+    "comments": 0,
+    "multi": 48,
+    "blank": 28,
+    "single_comments": 2
+  },
+  "tests/test_the_interface_reaches_a_real_server.py": {
+    "loc": 197,
+    "lloc": 73,
+    "sloc": 82,
+    "comments": 6,
+    "multi": 77,
+    "blank": 30,
+    "single_comments": 8
+  },
+  "tests/test_the_old_name_hands_over_its_data.py": {
+    "loc": 343,
+    "lloc": 154,
+    "sloc": 166,
+    "comments": 7,
+    "multi": 97,
+    "blank": 73,
+    "single_comments": 7
+  },
+  "tests/test_the_page_can_be_read.py": {
+    "loc": 165,
+    "lloc": 72,
+    "sloc": 77,
+    "comments": 2,
+    "multi": 49,
+    "blank": 36,
+    "single_comments": 3
+  },
+  "tests/test_the_page_is_assembled_from_its_files.py": {
+    "loc": 166,
+    "lloc": 62,
+    "sloc": 69,
+    "comments": 5,
+    "multi": 61,
+    "blank": 31,
+    "single_comments": 5
+  },
+  "tests/test_the_page_meets_the_craft_floor.py": {
+    "loc": 318,
+    "lloc": 100,
+    "sloc": 133,
+    "comments": 22,
+    "multi": 107,
+    "blank": 56,
+    "single_comments": 22
+  },
+  "tests/test_the_page_tells_the_truth.py": {
+    "loc": 1876,
+    "lloc": 625,
+    "sloc": 995,
+    "comments": 332,
+    "multi": 250,
+    "blank": 285,
+    "single_comments": 346
+  },
+  "tests/test_the_plugin_really_installs.py": {
+    "loc": 178,
+    "lloc": 71,
+    "sloc": 83,
+    "comments": 14,
+    "multi": 54,
+    "blank": 26,
+    "single_comments": 15
+  },
+  "tests/test_the_product_surface_is_what_the_product_uses.py": {
+    "loc": 467,
+    "lloc": 192,
+    "sloc": 209,
+    "comments": 34,
+    "multi": 144,
+    "blank": 77,
+    "single_comments": 37
+  },
+  "tests/test_the_prompt_says_each_thing_once.py": {
+    "loc": 153,
+    "lloc": 55,
+    "sloc": 61,
+    "comments": 3,
+    "multi": 59,
+    "blank": 30,
+    "single_comments": 3
+  },
+  "tests/test_the_session_column.py": {
+    "loc": 1064,
+    "lloc": 403,
+    "sloc": 518,
+    "comments": 70,
+    "multi": 281,
+    "blank": 197,
+    "single_comments": 68
+  },
+  "tests/test_the_split_between_the_panes.py": {
+    "loc": 279,
+    "lloc": 98,
+    "sloc": 125,
+    "comments": 12,
+    "multi": 87,
+    "blank": 54,
+    "single_comments": 13
+  },
+  "tests/test_the_stage_of_screens.py": {
+    "loc": 380,
+    "lloc": 118,
+    "sloc": 175,
+    "comments": 20,
+    "multi": 116,
+    "blank": 65,
+    "single_comments": 24
+  },
+  "tests/test_the_suite_declares_asyncio_once.py": {
+    "loc": 70,
+    "lloc": 31,
+    "sloc": 34,
+    "comments": 0,
+    "multi": 22,
+    "blank": 14,
+    "single_comments": 0
+  },
+  "tests/test_the_suite_reads_no_real_session.py": {
+    "loc": 367,
+    "lloc": 121,
+    "sloc": 148,
+    "comments": 18,
+    "multi": 134,
+    "blank": 64,
+    "single_comments": 21
+  },
+  "tests/test_the_transcript_follows_the_agent.py": {
+    "loc": 225,
+    "lloc": 53,
+    "sloc": 117,
+    "comments": 17,
+    "multi": 61,
+    "blank": 30,
+    "single_comments": 17
+  },
+  "tests/test_the_transcript_is_what_was_said.py": {
+    "loc": 137,
+    "lloc": 62,
+    "sloc": 67,
+    "comments": 0,
+    "multi": 41,
+    "blank": 27,
+    "single_comments": 2
+  },
+  "tests/test_the_version_describes_the_code.py": {
+    "loc": 239,
+    "lloc": 115,
+    "sloc": 126,
+    "comments": 0,
+    "multi": 66,
+    "blank": 46,
+    "single_comments": 1
+  },
+  "tests/test_the_wiki_samples_name_real_fields.py": {
+    "loc": 120,
+    "lloc": 60,
+    "sloc": 64,
+    "comments": 2,
+    "multi": 28,
+    "blank": 24,
+    "single_comments": 4
+  },
+  "tests/test_ui_drive.py": {
+    "loc": 963,
+    "lloc": 361,
+    "sloc": 533,
+    "comments": 102,
+    "multi": 173,
+    "blank": 154,
+    "single_comments": 103
+  },
+  "tests/test_version_is_not_taken.py": {
+    "loc": 276,
+    "lloc": 94,
+    "sloc": 107,
+    "comments": 14,
+    "multi": 98,
+    "blank": 57,
+    "single_comments": 14
+  },
+  "tests/test_web_service.py": {
+    "loc": 1119,
+    "lloc": 467,
+    "sloc": 522,
+    "comments": 116,
+    "multi": 284,
+    "blank": 212,
+    "single_comments": 101
+  },
+  "tests/test_what_is_imported_is_declared.py": {
+    "loc": 219,
+    "lloc": 105,
+    "sloc": 120,
+    "comments": 5,
+    "multi": 61,
+    "blank": 32,
+    "single_comments": 6
+  },
+  "tests/_cli_brake.py": {
+    "loc": 106,
+    "lloc": 41,
+    "sloc": 31,
+    "comments": 9,
+    "multi": 40,
+    "blank": 24,
+    "single_comments": 11
+  },
+  "tests/_loop.py": {
+    "loc": 29,
+    "lloc": 8,
+    "sloc": 7,
+    "comments": 0,
+    "multi": 16,
+    "blank": 6,
+    "single_comments": 0
+  },
+  "tests/_page.py": {
+    "loc": 32,
+    "lloc": 12,
+    "sloc": 7,
+    "comments": 4,
+    "multi": 12,
+    "blank": 8,
+    "single_comments": 5
+  },
+  "tests/_sessions.py": {
+    "loc": 35,
+    "lloc": 9,
+    "sloc": 6,
+    "comments": 0,
+    "multi": 22,
+    "blank": 7,
+    "single_comments": 0
+  },
+  "tests/mcp_server/test_addressing.py": {
+    "loc": 115,
+    "lloc": 59,
+    "sloc": 67,
+    "comments": 9,
+    "multi": 17,
+    "blank": 21,
+    "single_comments": 10
+  },
+  "tests/mcp_server/test_a_connection_is_closed_by_its_owner.py": {
+    "loc": 195,
+    "lloc": 80,
+    "sloc": 75,
+    "comments": 14,
+    "multi": 63,
+    "blank": 43,
+    "single_comments": 14
+  },
+  "tests/mcp_server/test_a_file_is_uploaded_through_its_chooser.py": {
+    "loc": 585,
+    "lloc": 398,
+    "sloc": 407,
+    "comments": 9,
+    "multi": 43,
+    "blank": 126,
+    "single_comments": 9
+  },
+  "tests/mcp_server/test_a_gone_browser_is_said.py": {
+    "loc": 153,
+    "lloc": 68,
+    "sloc": 76,
+    "comments": 2,
+    "multi": 45,
+    "blank": 29,
+    "single_comments": 3
+  },
+  "tests/mcp_server/test_a_typed_value_stays_typed.py": {
+    "loc": 284,
+    "lloc": 147,
+    "sloc": 177,
+    "comments": 5,
+    "multi": 38,
+    "blank": 64,
+    "single_comments": 5
+  },
+  "tests/mcp_server/test_clean.py": {
+    "loc": 328,
+    "lloc": 160,
+    "sloc": 166,
+    "comments": 16,
+    "multi": 71,
+    "blank": 73,
+    "single_comments": 18
+  },
+  "tests/mcp_server/test_click_diagnosis.py": {
+    "loc": 143,
+    "lloc": 85,
+    "sloc": 75,
+    "comments": 2,
+    "multi": 27,
+    "blank": 38,
+    "single_comments": 3
+  },
+  "tests/mcp_server/test_config.py": {
+    "loc": 89,
+    "lloc": 46,
+    "sloc": 38,
+    "comments": 1,
+    "multi": 22,
+    "blank": 28,
+    "single_comments": 1
+  },
+  "tests/mcp_server/test_describe_pages.py": {
+    "loc": 70,
+    "lloc": 47,
+    "sloc": 44,
+    "comments": 0,
+    "multi": 3,
+    "blank": 21,
+    "single_comments": 2
+  },
+  "tests/mcp_server/test_each_number_is_declared_once.py": {
+    "loc": 108,
+    "lloc": 37,
+    "sloc": 46,
+    "comments": 0,
+    "multi": 40,
+    "blank": 22,
+    "single_comments": 0
+  },
+  "tests/mcp_server/test_engine_prefetch.py": {
+    "loc": 184,
+    "lloc": 130,
+    "sloc": 117,
+    "comments": 0,
+    "multi": 22,
+    "blank": 43,
+    "single_comments": 2
+  },
+  "tests/mcp_server/test_every_description_reaches_the_model.py": {
+    "loc": 61,
+    "lloc": 30,
+    "sloc": 28,
+    "comments": 2,
+    "multi": 18,
+    "blank": 13,
+    "single_comments": 2
+  },
+  "tests/mcp_server/test_every_tool_says_what_it_does.py": {
+    "loc": 165,
+    "lloc": 70,
+    "sloc": 89,
+    "comments": 7,
+    "multi": 43,
+    "blank": 25,
+    "single_comments": 8
+  },
+  "tests/mcp_server/test_json_capped.py": {
+    "loc": 87,
+    "lloc": 53,
+    "sloc": 48,
+    "comments": 6,
+    "multi": 9,
+    "blank": 25,
+    "single_comments": 5
+  },
+  "tests/mcp_server/test_lifespan.py": {
+    "loc": 132,
+    "lloc": 68,
+    "sloc": 66,
+    "comments": 0,
+    "multi": 29,
+    "blank": 37,
+    "single_comments": 0
+  },
+  "tests/mcp_server/test_long_text_and_queued_input.py": {
+    "loc": 289,
+    "lloc": 182,
+    "sloc": 200,
+    "comments": 4,
+    "multi": 23,
+    "blank": 59,
+    "single_comments": 7
+  },
+  "tests/mcp_server/test_mcp_import.py": {
+    "loc": 4,
+    "lloc": 4,
+    "sloc": 4,
+    "comments": 0,
+    "multi": 0,
+    "blank": 0,
+    "single_comments": 0
+  },
+  "tests/mcp_server/test_navigate_reports_the_status.py": {
+    "loc": 229,
+    "lloc": 131,
+    "sloc": 134,
+    "comments": 1,
+    "multi": 43,
+    "blank": 49,
+    "single_comments": 3
+  },
+  "tests/mcp_server/test_no_interaction_by_script.py": {
+    "loc": 317,
+    "lloc": 116,
+    "sloc": 167,
+    "comments": 33,
+    "multi": 62,
+    "blank": 61,
+    "single_comments": 27
+  },
+  "tests/mcp_server/test_one_list_of_what_is_interactive.py": {
+    "loc": 126,
+    "lloc": 39,
+    "sloc": 49,
+    "comments": 0,
+    "multi": 50,
+    "blank": 27,
+    "single_comments": 0
+  },
+  "tests/mcp_server/test_one_plan_for_one_session.py": {
+    "loc": 364,
+    "lloc": 171,
+    "sloc": 150,
+    "comments": 6,
+    "multi": 110,
+    "blank": 97,
+    "single_comments": 7
+  },
+  "tests/mcp_server/test_open_first.py": {
+    "loc": 651,
+    "lloc": 372,
+    "sloc": 377,
+    "comments": 37,
+    "multi": 80,
+    "blank": 156,
+    "single_comments": 38
+  },
+  "tests/mcp_server/test_proxy.py": {
+    "loc": 30,
+    "lloc": 22,
+    "sloc": 20,
+    "comments": 0,
+    "multi": 0,
+    "blank": 10,
+    "single_comments": 0
+  },
+  "tests/mcp_server/test_readme_matches_the_code.py": {
+    "loc": 153,
+    "lloc": 62,
+    "sloc": 61,
+    "comments": 21,
+    "multi": 45,
+    "blank": 26,
+    "single_comments": 21
+  },
+  "tests/mcp_server/test_read_html_in_a_browser.py": {
+    "loc": 224,
+    "lloc": 96,
+    "sloc": 123,
+    "comments": 6,
+    "multi": 50,
+    "blank": 44,
+    "single_comments": 7
+  },
+  "tests/mcp_server/test_real_launch.py": {
+    "loc": 85,
+    "lloc": 53,
+    "sloc": 57,
+    "comments": 1,
+    "multi": 13,
+    "blank": 15,
+    "single_comments": 0
+  },
+  "tests/mcp_server/test_server_list.py": {
+    "loc": 102,
+    "lloc": 27,
+    "sloc": 70,
+    "comments": 49,
+    "multi": 10,
+    "blank": 10,
+    "single_comments": 12
+  },
+  "tests/mcp_server/test_session.py": {
+    "loc": 138,
+    "lloc": 85,
+    "sloc": 80,
+    "comments": 9,
+    "multi": 15,
+    "blank": 35,
+    "single_comments": 8
+  },
+  "tests/mcp_server/test_shadow_roots.py": {
+    "loc": 237,
+    "lloc": 118,
+    "sloc": 168,
+    "comments": 0,
+    "multi": 32,
+    "blank": 36,
+    "single_comments": 1
+  },
+  "tests/mcp_server/test_snapshot_capping.py": {
+    "loc": 118,
+    "lloc": 75,
+    "sloc": 64,
+    "comments": 0,
+    "multi": 24,
+    "blank": 24,
+    "single_comments": 6
+  },
+  "tests/mcp_server/test_snapshot_handles.py": {
+    "loc": 321,
+    "lloc": 141,
+    "sloc": 173,
+    "comments": 7,
+    "multi": 92,
+    "blank": 54,
+    "single_comments": 2
+  },
+  "tests/mcp_server/test_snapshot_visibility.py": {
+    "loc": 277,
+    "lloc": 116,
+    "sloc": 150,
+    "comments": 12,
+    "multi": 54,
+    "blank": 58,
+    "single_comments": 15
+  },
+  "tests/mcp_server/test_stdio_e2e.py": {
+    "loc": 193,
+    "lloc": 92,
+    "sloc": 106,
+    "comments": 20,
+    "multi": 43,
+    "blank": 24,
+    "single_comments": 20
+  },
+  "tests/mcp_server/test_stdio_shutdown.py": {
+    "loc": 95,
+    "lloc": 54,
+    "sloc": 61,
+    "comments": 6,
+    "multi": 12,
+    "blank": 16,
+    "single_comments": 6
+  },
+  "tests/mcp_server/test_the_command_contract.py": {
+    "loc": 86,
+    "lloc": 36,
+    "sloc": 31,
+    "comments": 0,
+    "multi": 35,
+    "blank": 20,
+    "single_comments": 0
+  },
+  "tests/mcp_server/test_the_handle_logic_runs.py": {
+    "loc": 214,
+    "lloc": 50,
+    "sloc": 120,
+    "comments": 2,
+    "multi": 61,
+    "blank": 30,
+    "single_comments": 3
+  },
+  "tests/mcp_server/test_the_snapshot_hides_a_password.py": {
+    "loc": 207,
+    "lloc": 116,
+    "sloc": 129,
+    "comments": 8,
+    "multi": 21,
+    "blank": 51,
+    "single_comments": 6
+  },
+  "tests/mcp_server/test_watch.py": {
+    "loc": 376,
+    "lloc": 236,
+    "sloc": 234,
+    "comments": 14,
+    "multi": 56,
+    "blank": 73,
+    "single_comments": 13
+  },
+  "tests/mcp_server/test_who_is_browsing.py": {
+    "loc": 176,
+    "lloc": 89,
+    "sloc": 81,
+    "comments": 3,
+    "multi": 42,
+    "blank": 49,
+    "single_comments": 4
+  },
+  "tests/mcp_server/test_who_is_browsing_e2e.py": {
+    "loc": 158,
+    "lloc": 66,
+    "sloc": 71,
+    "comments": 5,
+    "multi": 44,
+    "blank": 38,
+    "single_comments": 5
+  },
+  "tests/mcp_server/_stdio_helpers.py": {
+    "loc": 79,
+    "lloc": 15,
+    "sloc": 14,
+    "comments": 4,
+    "multi": 46,
+    "blank": 15,
+    "single_comments": 4
+  }
+}

@@ -1,0 +1,534 @@
+{
+  "src/invisible_playwright_mcp/actions_help.py": {
+    "mi": 69.62969375951256,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/agent.py": {
+    "mi": 41.55148076313222,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/chat.py": {
+    "mi": 49.734351831891125,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/chats.py": {
+    "mi": 77.73722499688344,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/cli.py": {
+    "mi": 59.620161992795666,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/engine.py": {
+    "mi": 61.77910379445753,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/env.py": {
+    "mi": 79.11449826496656,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/link.py": {
+    "mi": 56.579013333768046,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/llm.py": {
+    "mi": 85.46538421905393,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/quiet.py": {
+    "mi": 100.0,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/routes.py": {
+    "mi": 46.168598026015324,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/runner.py": {
+    "mi": 47.99542382301362,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/sessions.py": {
+    "mi": 41.74300416698434,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/storage.py": {
+    "mi": 49.812651367312185,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/_version.py": {
+    "mi": 59.92367530918929,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/__init__.py": {
+    "mi": 100.0,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/__main__.py": {
+    "mi": 84.58174335197131,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/actions.py": {
+    "mi": 33.19955289483814,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/clean.py": {
+    "mi": 42.53579133024512,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/identity.py": {
+    "mi": 61.468558408064965,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/plan.py": {
+    "mi": 47.25134707086609,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/process.py": {
+    "mi": 77.75037124341863,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/proxy.py": {
+    "mi": 82.3276651161182,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/server.py": {
+    "mi": 41.42147182845232,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/session.py": {
+    "mi": 56.34612435743366,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/store.py": {
+    "mi": 100.0,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/work.py": {
+    "mi": 30.60736933434804,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/mcp/__init__.py": {
+    "mi": 100.0,
+    "rank": "A"
+  },
+  "src/invisible_playwright_mcp/ui/__init__.py": {
+    "mi": 83.08743764662518,
+    "rank": "A"
+  },
+  "tests/conftest.py": {
+    "mi": 53.58267777922524,
+    "rank": "A"
+  },
+  "tests/test_agent.py": {
+    "mi": 65.05316628811914,
+    "rank": "A"
+  },
+  "tests/test_agent_loop.py": {
+    "mi": 17.384687111593358,
+    "rank": "B"
+  },
+  "tests/test_a_failed_selector_says_what_to_do.py": {
+    "mi": 59.491613113519584,
+    "rank": "A"
+  },
+  "tests/test_a_reconnection_keeps_what_you_typed.py": {
+    "mi": 68.97495818584949,
+    "rank": "A"
+  },
+  "tests/test_a_rule_is_written_where_it_is_applied.py": {
+    "mi": 71.40655914778067,
+    "rank": "A"
+  },
+  "tests/test_a_screen_says_what_it_is_showing.py": {
+    "mi": 58.038421938123086,
+    "rank": "A"
+  },
+  "tests/test_a_silence_says_why.py": {
+    "mi": 79.56592119594421,
+    "rank": "A"
+  },
+  "tests/test_a_workflow_runs_on_something_that_happens.py": {
+    "mi": 64.00762053105379,
+    "rank": "A"
+  },
+  "tests/test_cli_surface.py": {
+    "mi": 47.90325844255781,
+    "rank": "A"
+  },
+  "tests/test_engine.py": {
+    "mi": 45.98318450554791,
+    "rank": "A"
+  },
+  "tests/test_engine_first.py": {
+    "mi": 57.12628251362313,
+    "rank": "A"
+  },
+  "tests/test_env_file.py": {
+    "mi": 72.64747350749926,
+    "rank": "A"
+  },
+  "tests/test_every_control_says_what_it_does.py": {
+    "mi": 54.568350414551524,
+    "rank": "A"
+  },
+  "tests/test_every_tool_reads_as_english.py": {
+    "mi": 78.86907654533306,
+    "rank": "A"
+  },
+  "tests/test_import.py": {
+    "mi": 84.58174335197131,
+    "rank": "A"
+  },
+  "tests/test_key_isolation.py": {
+    "mi": 39.87444258583736,
+    "rank": "A"
+  },
+  "tests/test_llm.py": {
+    "mi": 87.34587640212214,
+    "rank": "A"
+  },
+  "tests/test_no_tracked_file_carries_a_control_byte.py": {
+    "mi": 82.64839361920335,
+    "rank": "A"
+  },
+  "tests/test_one_conversation_one_server.py": {
+    "mi": 60.98783776508581,
+    "rank": "A"
+  },
+  "tests/test_one_place_reads_a_saved_file.py": {
+    "mi": 68.22427302030417,
+    "rank": "A"
+  },
+  "tests/test_one_reader_of_a_tool_result.py": {
+    "mi": 70.62366220767635,
+    "rank": "A"
+  },
+  "tests/test_openrouter_only.py": {
+    "mi": 51.24378525853493,
+    "rank": "A"
+  },
+  "tests/test_publishing_surfaces.py": {
+    "mi": 20.9065465865301,
+    "rank": "A"
+  },
+  "tests/test_readme_offers_both.py": {
+    "mi": 60.31095160990551,
+    "rank": "A"
+  },
+  "tests/test_real_cli.py": {
+    "mi": 92.23242143952199,
+    "rank": "A"
+  },
+  "tests/test_release_pages.py": {
+    "mi": 47.66267301559987,
+    "rank": "A"
+  },
+  "tests/test_runner.py": {
+    "mi": 79.72007543130616,
+    "rank": "A"
+  },
+  "tests/test_the_answer_pane_draws_markdown.py": {
+    "mi": 48.30109745175509,
+    "rank": "A"
+  },
+  "tests/test_the_browser_workspace.py": {
+    "mi": 44.29070215824333,
+    "rank": "A"
+  },
+  "tests/test_the_bundle_holds_only_the_server.py": {
+    "mi": 83.87850214808691,
+    "rank": "A"
+  },
+  "tests/test_the_codex_plugin_really_installs.py": {
+    "mi": 69.08042288045029,
+    "rank": "A"
+  },
+  "tests/test_the_contrast_floors_are_computed.py": {
+    "mi": 64.66758567335032,
+    "rank": "A"
+  },
+  "tests/test_the_event_stream_wire_format.py": {
+    "mi": 51.43066403461403,
+    "rank": "A"
+  },
+  "tests/test_the_extension_archive_holds_only_the_extension.py": {
+    "mi": 72.31919719155249,
+    "rank": "A"
+  },
+  "tests/test_the_floor_carries_what_the_tools_need.py": {
+    "mi": 77.31816009856338,
+    "rank": "A"
+  },
+  "tests/test_the_gate_says_which_tree_it_judged.py": {
+    "mi": 67.83638292593281,
+    "rank": "A"
+  },
+  "tests/test_the_interface_reaches_a_real_server.py": {
+    "mi": 63.31290527265329,
+    "rank": "A"
+  },
+  "tests/test_the_old_name_hands_over_its_data.py": {
+    "mi": 53.653637514406746,
+    "rank": "A"
+  },
+  "tests/test_the_page_can_be_read.py": {
+    "mi": 65.3717171728398,
+    "rank": "A"
+  },
+  "tests/test_the_page_is_assembled_from_its_files.py": {
+    "mi": 62.911746653516325,
+    "rank": "A"
+  },
+  "tests/test_the_page_meets_the_craft_floor.py": {
+    "mi": 53.74594893598395,
+    "rank": "A"
+  },
+  "tests/test_the_page_tells_the_truth.py": {
+    "mi": 18.453638337166336,
+    "rank": "B"
+  },
+  "tests/test_the_plugin_really_installs.py": {
+    "mi": 66.47081349475957,
+    "rank": "A"
+  },
+  "tests/test_the_product_surface_is_what_the_product_uses.py": {
+    "mi": 42.87722240726472,
+    "rank": "A"
+  },
+  "tests/test_the_prompt_says_each_thing_once.py": {
+    "mi": 65.10121539824567,
+    "rank": "A"
+  },
+  "tests/test_the_session_column.py": {
+    "mi": 30.88307630118785,
+    "rank": "A"
+  },
+  "tests/test_the_split_between_the_panes.py": {
+    "mi": 58.630941261965624,
+    "rank": "A"
+  },
+  "tests/test_the_stage_of_screens.py": {
+    "mi": 56.24340088871412,
+    "rank": "A"
+  },
+  "tests/test_the_suite_declares_asyncio_once.py": {
+    "mi": 79.98223811478603,
+    "rank": "A"
+  },
+  "tests/test_the_suite_reads_no_real_session.py": {
+    "mi": 53.44710372667,
+    "rank": "A"
+  },
+  "tests/test_the_transcript_follows_the_agent.py": {
+    "mi": 69.7959792346861,
+    "rank": "A"
+  },
+  "tests/test_the_transcript_is_what_was_said.py": {
+    "mi": 70.53327270993773,
+    "rank": "A"
+  },
+  "tests/test_the_version_describes_the_code.py": {
+    "mi": 59.59950661508805,
+    "rank": "A"
+  },
+  "tests/test_the_wiki_samples_name_real_fields.py": {
+    "mi": 68.92751606943835,
+    "rank": "A"
+  },
+  "tests/test_ui_drive.py": {
+    "mi": 32.53596709261322,
+    "rank": "A"
+  },
+  "tests/test_version_is_not_taken.py": {
+    "mi": 57.25265068812002,
+    "rank": "A"
+  },
+  "tests/test_web_service.py": {
+    "mi": 21.765182060285778,
+    "rank": "A"
+  },
+  "tests/test_what_is_imported_is_declared.py": {
+    "mi": 59.32186809933763,
+    "rank": "A"
+  },
+  "tests/_cli_brake.py": {
+    "mi": 65.48273076921863,
+    "rank": "A"
+  },
+  "tests/_loop.py": {
+    "mi": 100.0,
+    "rank": "A"
+  },
+  "tests/_page.py": {
+    "mi": 71.843284075492,
+    "rank": "A"
+  },
+  "tests/_sessions.py": {
+    "mi": 100.0,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_addressing.py": {
+    "mi": 63.750509304013455,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_a_connection_is_closed_by_its_owner.py": {
+    "mi": 70.11241059912336,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_a_file_is_uploaded_through_its_chooser.py": {
+    "mi": 27.87220132498656,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_a_gone_browser_is_said.py": {
+    "mi": 69.3320461318865,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_a_typed_value_stays_typed.py": {
+    "mi": 50.541278683172166,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_clean.py": {
+    "mi": 50.11652976156684,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_click_diagnosis.py": {
+    "mi": 67.9648585817602,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_config.py": {
+    "mi": 74.75298432974309,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_describe_pages.py": {
+    "mi": 64.0676661245689,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_each_number_is_declared_once.py": {
+    "mi": 73.96339573683962,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_engine_prefetch.py": {
+    "mi": 54.80038775571736,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_every_description_reaches_the_model.py": {
+    "mi": 79.10784227850228,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_every_tool_says_what_it_does.py": {
+    "mi": 62.195120838633976,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_json_capped.py": {
+    "mi": 68.42229065156688,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_lifespan.py": {
+    "mi": 69.84871061012495,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_long_text_and_queued_input.py": {
+    "mi": 44.69042934026361,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_mcp_import.py": {
+    "mi": 100.0,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_navigate_reports_the_status.py": {
+    "mi": 57.469216981684745,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_no_interaction_by_script.py": {
+    "mi": 60.42815288432648,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_one_list_of_what_is_interactive.py": {
+    "mi": 72.57020942221646,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_one_plan_for_one_session.py": {
+    "mi": 51.21467945389053,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_open_first.py": {
+    "mi": 32.004984912779044,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_proxy.py": {
+    "mi": 55.62602436255119,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_readme_matches_the_code.py": {
+    "mi": 62.74619678956288,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_read_html_in_a_browser.py": {
+    "mi": 65.11320390388748,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_real_launch.py": {
+    "mi": 73.57165894728831,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_server_list.py": {
+    "mi": 79.90726415228374,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_session.py": {
+    "mi": 63.834266611800444,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_shadow_roots.py": {
+    "mi": 58.51994667711345,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_snapshot_capping.py": {
+    "mi": 66.26609215974905,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_snapshot_handles.py": {
+    "mi": 56.77884124270507,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_snapshot_visibility.py": {
+    "mi": 61.214827466571066,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_stdio_e2e.py": {
+    "mi": 62.216749873483415,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_stdio_shutdown.py": {
+    "mi": 68.12639134262704,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_the_command_contract.py": {
+    "mi": 74.84286264800767,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_the_handle_logic_runs.py": {
+    "mi": 69.37012502945635,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_the_snapshot_hides_a_password.py": {
+    "mi": 54.609665812696,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_watch.py": {
+    "mi": 47.69310963397638,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_who_is_browsing.py": {
+    "mi": 63.3116075237679,
+    "rank": "A"
+  },
+  "tests/mcp_server/test_who_is_browsing_e2e.py": {
+    "mi": 71.55097933252581,
+    "rank": "A"
+  },
+  "tests/mcp_server/_stdio_helpers.py": {
+    "mi": 41.762974007400146,
+    "rank": "A"
+  }
+}
