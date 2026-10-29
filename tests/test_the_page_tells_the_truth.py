@@ -1408,40 +1408,22 @@ def test_the_queued_sentence_is_on_screen_and_survives_a_click_composer(queued_s
         % (got["box"],))
 
 
-def test_the_browser_state_is_only_announced_when_it_changes():
-    """⛔ IT REWROTE THE PAGE'S LIVE REGION 25 TIMES A SECOND.
+# ⛔ IT REWROTE THE PAGE'S LIVE REGION 25 TIMES A SECOND.
+#
+# The frame pump calls `say` on every pass, and `say` wrote the state, the
+# word beside it and a title whether or not anything had changed. A screen
+# reader announces every one of those writes: the word `live`, over and over,
+# with the queue never emptying - so the one transition that matters, live to
+# error, could never be reached. Somebody using this product by ear was shut
+# out of it for exactly as long as it was working.
+#
+# Guarded in `say` and not at the pump, because there are eight callers and
+# "the state changed" is one fact. Executed: the defect is not visible in the
+# text of a function that always wrote the same three properties.
+#
+# Known-bad: drop the guard, or guard only the pump's call site.
 
-    The frame pump calls `say` on every pass, and `say` wrote the state, the
-    word beside it and a title whether or not anything had changed. A screen
-    reader announces every one of those writes: the word `live`, over and over,
-    with the queue never emptying - so the one transition that matters, live to
-    error, could never be reached. Somebody using this product by ear was shut
-    out of it for exactly as long as it was working.
-
-    Guarded in `say` and not at the pump, because there are eight callers and
-    "the state changed" is one fact. Executed: the defect is not visible in the
-    text of a function that always wrote the same three properties.
-
-    Known-bad: drop the guard, or guard only the pump's call site.
-    """
-    import json
-    import shutil
-    import subprocess
-
-    import pytest
-
-    node = shutil.which("node")
-    if not node:
-        pytest.skip("needs node to EXECUTE say()")
-
-    end = "stateEl.title = why || ''; }"
-    #: from the variable the guard keeps, not from the function: what has
-    #: been DRAWN is the thing being remembered, and slicing below it was
-    #: how the harness first reported a defect that was its own.
-    src = CODE[CODE.index("let shown = null;"):]
-    src = src[:src.index(end) + len(end)]
-
-    harness = [
+BROWSER_STATE_OUTCOMES_HARNESS = [
         "let writes = 0;",
         "/* the markup declares the first state before any script runs, which is",
         "   where the first version of this guard went wrong: it read the DOM,",
@@ -1465,12 +1447,37 @@ def test_the_browser_state_is_only_announced_when_it_changes():
         "                                     afterReason: writes}));",
     ]
 
+@pytest.fixture
+def browser_state_outcomes():
+    """Prepare the scenario independently for each focused check."""
+    import json
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("needs node to EXECUTE say()")
+
+    end = "stateEl.title = why || ''; }"
+    #: from the variable the guard keeps, not from the function: what has
+    #: been DRAWN is the thing being remembered, and slicing below it was
+    #: how the harness first reported a defect that was its own.
+    src = CODE[CODE.index("let shown = null;"):]
+    src = src[:src.index(end) + len(end)]
+
+    harness = list(BROWSER_STATE_OUTCOMES_HARNESS)
+
     done = subprocess.run([node, "-e", src + chr(10) + chr(10).join(harness)],
                           capture_output=True, text=True, encoding="utf-8",
                           timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_the_browser_state_is_only_announced_when_it_changes(browser_state_outcomes):
+    got = browser_state_outcomes
     assert got["normalised"] == 1, (
         "the first call is swallowed because the markup already declares that "
         "state, so the page is never normalised: the word IDLE stays in bright "
@@ -1480,6 +1487,10 @@ def test_the_browser_state_is_only_announced_when_it_changes():
         "a hundred passes of an unchanged browser wrote the live region %d "
         "times, which a screen reader reads out %d times"
         % (got["steady"] - 1, got["steady"] - 1))
+
+
+def test_the_browser_state_is_only_announced_when_it_changes_changes(browser_state_outcomes):
+    got = browser_state_outcomes
     assert got["afterChange"] == 3, (
         "the guard swallowed a real change, which is the one thing it must "
         "never do: %r" % (got,))
