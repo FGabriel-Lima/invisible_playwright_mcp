@@ -835,31 +835,34 @@ def test_a_page_older_than_the_server_says_so_instead_of_going_quiet_failed_requ
         "the 410 path stopped working while the 404 one was added")
 
 
-def test_opening_the_rail_moves_nothing_outside_it():
-    """⛔ THE SESSION COLUMN LIVES OVER THE CONVERSATION, AND THE CONVERSATION
-    KNOWS NOTHING ABOUT IT. Owner, looking at it: the bar has to live on top,
-    and the chat must not know a thing.
+# ⛔ THE SESSION COLUMN LIVES OVER THE CONVERSATION, AND THE CONVERSATION
+# KNOWS NOTHING ABOUT IT. Owner, looking at it: the bar has to live on top,
+# and the chat must not know a thing.
+#
+# It did not. Measured in a real browser on 2026-09-11: opening the column
+# moved `#left` from x=48 to x=0 and widened the browser pane by 48, because
+# the spine left the flow to give its width back - and the transcript and the
+# composer took a left padding at the same time, so every paragraph rewrapped
+# while the panel appeared. Content height went 4234 to 4412. Somebody
+# reading had the words move under their eyes to open a list.
+#
+# Now the spine belongs to the frame and stays, the drawer slides out beside
+# it, and the same measurement gives identical boxes before and after.
+#
+# Two rules, and the second is the one that is easy to reintroduce:
+#
+# * nothing OUTSIDE the rail may be selected by the rail's open state;
+# * the toggle may restyle itself - ink, background - but may not change its
+#   own BOX, because the spine is in the flow and its box is everybody
+#   else's position.
+#
+# Known-bad: put back either the rule that took the toggle out of the flow
+# when open, or the one that padded the transcript to dodge the panel.
 
-    It did not. Measured in a real browser on 2026-09-11: opening the column
-    moved `#left` from x=48 to x=0 and widened the browser pane by 48, because
-    the spine left the flow to give its width back - and the transcript and the
-    composer took a left padding at the same time, so every paragraph rewrapped
-    while the panel appeared. Content height went 4234 to 4412. Somebody
-    reading had the words move under their eyes to open a list.
 
-    Now the spine belongs to the frame and stays, the drawer slides out beside
-    it, and the same measurement gives identical boxes before and after.
-
-    Two rules, and the second is the one that is easy to reintroduce:
-
-    * nothing OUTSIDE the rail may be selected by the rail's open state;
-    * the toggle may restyle itself - ink, background - but may not change its
-      own BOX, because the spine is in the flow and its box is everybody
-      else's position.
-
-    Known-bad: put back either the rule that took the toggle out of the flow
-    when open, or the one that padded the transcript to dodge the panel.
-    """
+@pytest.fixture
+def rail_layout_outcomes():
+    """Prepare the scenario independently for each focused check."""
     import re
 
     style = CODE[CODE.index("<style"):CODE.index("</style>")]
@@ -898,9 +901,18 @@ def test_opening_the_rail_moves_nothing_outside_it():
                 if name.split('-')[0] in boxy or name in boxy:
                     moved.append('%s -> %s' % (sel, name))
 
+    return outside, moved
+
+
+def test_opening_the_rail_moves_nothing_outside_it(rail_layout_outcomes):
+    outside, moved = rail_layout_outcomes
     assert not outside, (
         "these rules make something outside the session column react to it being "
         "open, which is the column reaching into the conversation: %s" % outside)
+
+
+def test_opening_the_rail_moves_nothing_outside_it_inside_layout(rail_layout_outcomes):
+    outside, moved = rail_layout_outcomes
     assert not moved, (
         "the toggle changes its own box when the column opens, and the spine is "
         "in the flow - so every pane beside it moves: %s" % moved)
