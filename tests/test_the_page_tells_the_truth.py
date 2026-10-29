@@ -918,35 +918,36 @@ def test_opening_the_rail_moves_nothing_outside_it_inside_layout(rail_layout_out
         "in the flow - so every pane beside it moves: %s" % moved)
 
 
-def test_a_lead_in_is_not_drawn_and_the_answer_still_is():
-    """⛔ THE SENTENCE THAT COMES WITH THE TOOL CALLS IS NOT DRAWN, and the
-    one that comes instead of them is.
+# ⛔ THE SENTENCE THAT COMES WITH THE TOOL CALLS IS NOT DRAWN, and the
+# one that comes instead of them is.
+#
+# Owner, reading a run whose narration was in Italian, translated here:
+# `Site open. Let me see what is on the home page.` above a row that says
+# `Inspected`, then `I will close the cookie banner first` above a row that
+# says `Clicked`. The sentence announces what the row below it states, so
+# the column spent three lines saying one thing and spaced the things worth
+# reading out with the things that were not.
+#
+# The distinction needs no guessing, which is why this can be mechanical:
+# `asAnswer` is true only when the run went idle still holding the text,
+# which is the message the model sent with no tool calls. Every other path
+# through the dispatcher is a sentence that had something after it.
+#
+# ⛔ AND THE ANSWER IS THE HALF THAT MATTERS HERE. Dropping the lead-in is
+# one line, and the same line one character wrong drops the answer too - a
+# run that works perfectly and ends with nothing on the page. So this runs
+# the function both ways rather than checking that the branch exists.
+#
+# Known-bad: return before drawing whatever it is handed; or invert the
+# test and draw only the lead-in.
 
-    Owner, reading a run whose narration was in Italian, translated here:
-    `Site open. Let me see what is on the home page.` above a row that says
-    `Inspected`, then `I will close the cookie banner first` above a row that
-    says `Clicked`. The sentence announces what the row below it states, so
-    the column spent three lines saying one thing and spaced the things worth
-    reading out with the things that were not.
 
-    The distinction needs no guessing, which is why this can be mechanical:
-    `asAnswer` is true only when the run went idle still holding the text,
-    which is the message the model sent with no tool calls. Every other path
-    through the dispatcher is a sentence that had something after it.
-
-    ⛔ AND THE ANSWER IS THE HALF THAT MATTERS HERE. Dropping the lead-in is
-    one line, and the same line one character wrong drops the answer too - a
-    run that works perfectly and ends with nothing on the page. So this runs
-    the function both ways rather than checking that the branch exists.
-
-    Known-bad: return before drawing whatever it is handed; or invert the
-    test and draw only the lead-in.
-    """
+@pytest.fixture
+def lead_in_outcomes():
+    """Prepare the scenario independently for each focused check."""
     import json
     import shutil
     import subprocess
-
-    import pytest
 
     node = shutil.which("node")
     if not node:
@@ -957,15 +958,24 @@ def test_a_lead_in_is_not_drawn_and_the_answer_still_is():
     done = subprocess.run([node, "-e", src + chr(10) + "let drawn = [];\nglobalThis.LEAD = /^(I will |I'll |Let me )/i;\nglobalThis.el = (tag, cls, t) => ({tag, cls, t, kids: [],\n                                   appendChild(k){ this.kids.push(k); }});\nglobalThis.rich = t => ({tag: 'rich', t});\nglobalThis.put = (node) => drawn.push(node);\nglobalThis.hold = null;\nconst out = {};\nhold = 'Let me close the cookie banner first.';\nflush(false); out.afterLeadIn = drawn.length; out.heldAfter = hold;\nhold = 'The cart has one item, 149,99 EUR.';\nflush(true); out.afterAnswer = drawn.length;\nout.cls = drawn.length ? drawn[0].cls : null;\nflush(false); flush(true); out.afterEmpty = drawn.length;\nprocess.stdout.write(JSON.stringify(out));"],
                           capture_output=True, text=True,
                           encoding="utf-8", timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_a_lead_in_is_not_drawn_and_the_answer_still_is(lead_in_outcomes):
+    got = lead_in_outcomes
     assert got["afterLeadIn"] == 0, (
         "the sentence that came with the tool calls was drawn, which is the "
         "announcement of the row underneath it")
     assert got["heldAfter"] is None, (
         "the lead-in was dropped but left held, so the next flush draws it as "
         "though it were the answer")
+
+
+def test_a_lead_in_is_not_drawn_and_the_answer_still_is_answer(lead_in_outcomes):
+    got = lead_in_outcomes
     assert got["afterAnswer"] == 1, (
         "the ANSWER was not drawn: a run that worked ends with nothing on the "
         "page, which is the expensive half of getting this line wrong")
