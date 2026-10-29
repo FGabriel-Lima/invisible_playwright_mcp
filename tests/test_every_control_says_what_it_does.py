@@ -261,19 +261,16 @@ def test_the_first_run_example_fills_the_box_and_sends_nothing():
     assert got["untouched"], "a click anywhere in the transcript rewrites the box"
 
 
-@needs_node
-def test_the_session_list_tells_a_failed_load_from_an_empty_one():
-    """⛔ A LIST THAT COULD NOT BE LOADED LOOKED LIKE AN EMPTY ONE. The fetch
-    failing returned early and left whatever was drawn before - or, on a first
-    open, the sentence `No saved conversations yet`, which was a lie in the
-    shape of an empty state. Three outcomes now, and `null` is the answer for
-    "I do not know".
+# ⛔ A LIST THAT COULD NOT BE LOADED LOOKED LIKE AN EMPTY ONE. The fetch
+# failing returned early and left whatever was drawn before - or, on a first
+# open, the sentence `No saved conversations yet`, which was a lie in the
+# shape of an empty state. Three outcomes now, and `null` is the answer for
+# "I do not know".
+#
+# Known-bad: return early in the catch again, or fold the two cases back
+# into one sentence.
 
-    Known-bad: return early in the catch again, or fold the two cases back
-    into one sentence.
-    """
-    src = whole("async function drawChats(){", chr(10) + "}")
-    harness = [
+SESSION_LIST_OUTCOMES_HARNESS = [
         "const made = () => ({kids:[], attrs:{}, dataset:{}, textContent:'',",
         "  appendChild(k){ this.kids.push(k); }, append(...k){ this.kids.push(...k); },",
         "  setAttribute(k, v){ this.attrs[k] = v; }, removeAttribute(k){ delete this.attrs[k]; }});",
@@ -301,11 +298,34 @@ def test_the_session_list_tells_a_failed_load_from_an_empty_one():
         "  process.stdout.write(JSON.stringify(out));",
         "})();",
     ]
+
+@pytest.fixture
+def session_list_outcomes():
+    """Prepare the scenario independently for each focused check."""
+    src = whole("async function drawChats(){", chr(10) + "}")
+    harness = list(SESSION_LIST_OUTCOMES_HARNESS)
     got = run(chr(10).join(harness).replace("HERE", src))
+
+    return got
+
+
+@needs_node
+def test_the_session_list_tells_a_failed_load_from_an_empty_one(session_list_outcomes):
+    got = session_list_outcomes
     assert len(got["down"]) == 1 and "could not be loaded" in got["down"][0], (
         "a failed load of the session list is drawn as something else: %r" % (got,))
+
+
+@needs_node
+def test_the_session_list_tells_a_failed_load_from_an_empty_one_empty(session_list_outcomes):
+    got = session_list_outcomes
     assert len(got["empty"]) == 1 and "No saved conversations" in got["empty"][0], (
         "an empty list lost its own sentence: %r" % (got,))
+
+
+@needs_node
+def test_the_session_list_tells_a_failed_load_from_an_empty_one_populated(session_list_outcomes):
+    got = session_list_outcomes
     assert got["rows"] == ["chat", "chat"] and got["role"] == "list", (
         "a list that arrived is not drawn as a list: %r" % (got,))
 
