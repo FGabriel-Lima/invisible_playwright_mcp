@@ -1813,24 +1813,25 @@ def test_the_default_conversation_id_is_the_servers_and_not_the_pages():
     assert got["mineNamed"] is True and got["notMine"] is False, got
 
 
-def test_an_empty_stage_asks_the_server_for_nothing():
-    """The empty stage holds the placeholder that says "No browser open", and
-    it is a child of the stage like any other. Until 0.52.0 the frame pump took
-    it in turn, read no id off it, and asked for `/live/frame?b=undefined`
-    twenty-five times a second - a tool call each, refused each, for a stage
-    with nothing on it. Found by starting the product and reading its log,
-    which is where this class of defect lives: no route test sees a pump.
+# The empty stage holds the placeholder that says "No browser open", and
+# it is a child of the stage like any other. Until 0.52.0 the frame pump took
+# it in turn, read no id off it, and asked for `/live/frame?b=undefined`
+# twenty-five times a second - a tool call each, refused each, for a stage
+# with nothing on it. Found by starting the product and reading its log,
+# which is where this class of defect lives: no route test sees a pump.
+#
+# Executed: `onePass` over a stage holding only the placeholder must call the
+# door zero times, and over one real screen exactly once.
+#
+# Known-bad: take the filter off the cells.
 
-    Executed: `onePass` over a stage holding only the placeholder must call the
-    door zero times, and over one real screen exactly once.
 
-    Known-bad: take the filter off the cells.
-    """
+@pytest.fixture
+def empty_stage_outcomes():
+    """Prepare the scenario independently for each focused check."""
     import json
     import shutil
     import subprocess
-
-    import pytest
 
     node = shutil.which("node")
     if not node:
@@ -1856,11 +1857,20 @@ def test_an_empty_stage_asks_the_server_for_nothing():
     )
     done = subprocess.run([node, "-e", js], capture_output=True, text=True,
                           encoding="utf-8", timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_an_empty_stage_asks_the_server_for_nothing(empty_stage_outcomes):
+    got = empty_stage_outcomes
     assert got["empty"] == 0, (
         "the pump asked the server for a frame of the placeholder: %r" % got)
+
+
+def test_an_empty_stage_asks_the_server_for_nothing_populated(empty_stage_outcomes):
+    got = empty_stage_outcomes
     assert len(got["then"]) == 2 and all("b=main" in p for p in got["then"]), (
         "with one screen the pump does not ask for that screen and nothing "
         "else: %r" % got)
