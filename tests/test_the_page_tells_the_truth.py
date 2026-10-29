@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import re
 
+import pytest
+
 from pathlib import Path
 
 from invisible_playwright_mcp.ui import PAGE
@@ -258,36 +260,37 @@ def test_a_stopped_browser_is_never_asked_anything():
         "the address bar names a browser the fleet does not hold, so it shows "
         "the address of one that is closed or gone")
 
-def test_the_address_bar_says_where_the_browser_being_watched_is():
-    """⛔ EXECUTED, NOT SCANNED, because the two ways to get this wrong both
-    produce a url and both look right.
+# ⛔ EXECUTED, NOT SCANNED, because the two ways to get this wrong both
+# produce a url and both look right.
+#
+# This choice used to be a route, `/live/address`, with four tests on the
+# server. It moved into the page when the route turned out to be asking
+# `browser_list` a second time, on a second timer, for a field the rows
+# `/live/browsers` already returns - and because which browser a person is
+# WATCHING is a fact of the page: a pinned pane changes it instantly and a
+# poll from three seconds ago cannot know.
+#
+# Moving it must not cost the two properties those tests held, so this
+# runs the function rather than reading it. `node` is on this machine and
+# on every CI runner, and the function is pure, so it needs no DOM at all.
+#
+# Known-bad, and both are one character away: read `urls[0]` instead of
+# `url`, which agrees until a site opens a second page; or answer the first
+# row whatever was asked for, which names a browser nobody is looking at.
+#
+# ⛔ AND IT TAKES A NAME OR IT ANSWERS NOTHING, since 0.55.0. It used to
+# fall back on a `focused` flag on each row - which was that row's id
+# compared against the `focus` beside it, the same fact twice on one wire -
+# and that flag is gone. Who is being watched is `pinned || focus`, decided
+# in the caller; with nobody to watch there is no address to show.
 
-    This choice used to be a route, `/live/address`, with four tests on the
-    server. It moved into the page when the route turned out to be asking
-    `browser_list` a second time, on a second timer, for a field the rows
-    `/live/browsers` already returns - and because which browser a person is
-    WATCHING is a fact of the page: a pinned pane changes it instantly and a
-    poll from three seconds ago cannot know.
 
-    Moving it must not cost the two properties those tests held, so this
-    runs the function rather than reading it. `node` is on this machine and
-    on every CI runner, and the function is pure, so it needs no DOM at all.
-
-    Known-bad, and both are one character away: read `urls[0]` instead of
-    `url`, which agrees until a site opens a second page; or answer the first
-    row whatever was asked for, which names a browser nobody is looking at.
-
-    ⛔ AND IT TAKES A NAME OR IT ANSWERS NOTHING, since 0.55.0. It used to
-    fall back on a `focused` flag on each row - which was that row's id
-    compared against the `focus` beside it, the same fact twice on one wire -
-    and that flag is gone. Who is being watched is `pinned || focus`, decided
-    in the caller; with nobody to watch there is no address to show.
-    """
+@pytest.fixture
+def address_bar_outcomes():
+    """Prepare the scenario independently for each focused check."""
     import json
     import shutil
     import subprocess
-
-    import pytest
 
     node = shutil.which("node")
     if not node:
@@ -317,20 +320,28 @@ process.stdout.write(JSON.stringify(out));
 """
     done = subprocess.run([node, "-e", js], capture_output=True, text=True,
                           encoding="utf-8", timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_the_address_bar_says_where_the_browser_being_watched_is(address_bar_outcomes):
+    got = address_bar_outcomes
     assert got["live"] == "https://b.example/x", (
         "the bar shows a page the browser is not on: with two pages open it read the first one in the list instead of the live one")
     assert got["watched"] == "https://mail.example/", (
         "a pinned pane was told another browser's address, which is a wrong answer that looks exactly like a right one")
+
+
+def test_the_address_bar_says_where_the_browser_being_watched_is_missing_addresses(address_bar_outcomes):
+    got = address_bar_outcomes
     assert got["unknown"] == "", "a browser that is not in the fleet has no address"
     assert got["nobody"] == "", (
         "with nobody being watched it answered a row anyway, which is the flag "
         "this fallback used to read coming back under another name")
     assert got["empty"] == "" and got["notalist"] == "" and got["nourl"] == "", (
         "an empty or unreadable fleet has to leave the bar blank rather than throw")
-
 
 
 def test_a_frame_is_revoked_before_its_element_is_thrown_away():
