@@ -1537,36 +1537,22 @@ def test_the_one_input_on_the_page_keeps_its_focus_ring():
 
 
 
-def test_clearing_the_conversation_leaves_the_page_able_to_explain_itself():
-    """⛔ CLEAR DELETED THE PRODUCT'S ONLY GUIDANCE OUT OF THE DOM FOR GOOD.
+# ⛔ CLEAR DELETED THE PRODUCT'S ONLY GUIDANCE OUT OF THE DOM FOR GOOD.
+#
+# The three sentences that say what this is live in the markup and the first
+# turn removes them, which is right. `wipe()` emptied the transcript without
+# putting them back, so pressing Clear on a finished conversation left a void
+# - and the page had forgotten how to introduce itself until the tab was
+# reloaded.
+#
+# Cloned from the markup rather than rebuilt in a builder: the same three
+# sentences written twice is the duplication that makes one of the two go
+# stale.
+#
+# Known-bad: drop the restore from `wipe`, or write the sentences a second
+# time in the script instead of cloning the node.
 
-    The three sentences that say what this is live in the markup and the first
-    turn removes them, which is right. `wipe()` emptied the transcript without
-    putting them back, so pressing Clear on a finished conversation left a void
-    - and the page had forgotten how to introduce itself until the tab was
-    reloaded.
-
-    Cloned from the markup rather than rebuilt in a builder: the same three
-    sentences written twice is the duplication that makes one of the two go
-    stale.
-
-    Known-bad: drop the restore from `wipe`, or write the sentences a second
-    time in the script instead of cloning the node.
-    """
-    import json
-    import shutil
-    import subprocess
-
-    import pytest
-
-    node = shutil.which("node")
-    if not node:
-        pytest.skip("needs node to EXECUTE wipe()")
-
-    src = CODE[CODE.index("function wipe(){"):]
-    src = src[:src.index(chr(10) + "}") + 2]
-
-    harness = [
+CLEARED_CONVERSATION_OUTCOMES_HARNESS = [
         "let kids = ['a turn', 'another turn'];",
         "globalThis.thread = {",
         "  set textContent(v){ kids = []; },",
@@ -1582,12 +1568,33 @@ def test_clearing_the_conversation_leaves_the_page_able_to_explain_itself():
         "process.stdout.write(JSON.stringify({left: kids}));",
     ]
 
+@pytest.fixture
+def cleared_conversation_outcomes():
+    """Prepare the scenario independently for each focused check."""
+    import json
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("needs node to EXECUTE wipe()")
+
+    src = CODE[CODE.index("function wipe(){"):]
+    src = src[:src.index(chr(10) + "}") + 2]
+
+    harness = list(CLEARED_CONVERSATION_OUTCOMES_HARNESS)
+
     done = subprocess.run([node, "-e", src + chr(10) + chr(10).join(harness)],
                           capture_output=True, text=True, encoding="utf-8",
                           timeout=30)
-    assert done.returncode == 0, done.stderr
+    done.check_returncode()
     got = json.loads(done.stdout)
 
+    return got
+
+
+def test_clearing_the_conversation_leaves_the_page_able_to_explain_itself(cleared_conversation_outcomes):
+    got = cleared_conversation_outcomes
     assert got["left"] == ["the guidance"], (
         "clearing the conversation leaves a pane with nothing in it, on a "
         "product whose whole first-run explanation was what it just deleted: "
